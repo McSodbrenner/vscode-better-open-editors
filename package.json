@@ -1,0 +1,87 @@
+{
+  "name": "better-open-editors",
+  "displayName": "Better Open Editors",
+  "description": "Groups open editors by package folders.",
+  "keywords": ["editors", "tabs", "groups", "packages", "monorepo"],
+  "version": "1.0.0",
+  "license": "MIT",
+  "engines": { "vscode": "^1.69.0" },
+  "publisher": "McSodbrenner",
+  "categories": [ "Other" ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Better Open Editors",
+      "properties": {
+        "betterOpenEditors.InsertSpacesAroundSlashes": {
+          "order": 1,
+          "type": "boolean",
+          "default": false,
+          "description": "Insert spaces around path slashes to improve the readability."
+        },
+        "betterOpenEditors.ShowWorkspaceIcon": {
+          "order": 2,
+          "type": "boolean",
+          "default": false,
+          "description": "Shows a Workspace Icon in front of workspace folders."
+        },
+        "betterOpenEditors.ShowPackageIcon": {
+          "order": 3,
+          "type": "boolean",
+          "default": false,
+          "description": "Shows a Package Icon in front of packages."
+        },
+        "betterOpenEditors.PackagePatterns": {
+          "order": 4,
+          "type": "string",
+          "editPresentation": "multilineText",
+          "default": "",
+          "description": "One regular expression per line which creates a package folder if a parent path of a file matches it, e.g. 'packages/[^/]+$'. Useful for workspace dependent settings."
+        }
+      }
+    },
+    "viewsWelcome": [
+      {
+        "view": "betterOpenEditors",
+        "contents": "You have not yet opened a folder.\n[Open Folder](command:vscode.openFolder)"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "betterOpenEditors",
+          "name": "Better Open Editors"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "betterOpenEditors.openExtensionSettings",
+        "title": "Open settings",
+        "icon": "$(gear)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "betterOpenEditors.openExtensionSettings",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    "eslint": "^8.20.0"
+  },
+  "dependencies": {
+    "lodash.orderby": "^4.6.0"
+  }
+}
