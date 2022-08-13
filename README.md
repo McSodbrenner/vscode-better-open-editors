@@ -29,7 +29,7 @@ If you have any requirements or dependencies, add a section describing those and
 * `betterOpenEditors.ShowWorkspaceIcon`  
    Shows a Package Icon in front of packages.
 * `betterOpenEditors.PackagePatterns`  
-   One regular expression per line which creates a package folder if a parent path of a file matches it, e.g. 'packages/[^/]+$'. Useful for workspace dependent settings.
+   One regular expression per line which creates a package folder if a parent path of a file matches it, e.g. `packages/[^/]+$`. Useful for workspace dependent settings.
 
 ## Known Issues
 

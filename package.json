@@ -5,6 +5,7 @@
   "keywords": ["editors", "tabs", "groups", "packages", "monorepo"],
   "version": "1.0.0",
   "license": "MIT",
+  "repository": "https://github.com/McSodbrenner/vscode-better-open-editors",
   "engines": { "vscode": "^1.69.0" },
   "publisher": "McSodbrenner",
   "categories": [ "Other" ],
