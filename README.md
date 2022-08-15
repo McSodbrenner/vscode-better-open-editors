@@ -14,10 +14,6 @@ Therefore this extension helps by grouping the open files in package folders.
   * Supports multiple workspace folders.
 
 
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
 ## Extension Settings
 
 * `betterOpenEditors.InsertSpacesAroundSlashes`  
@@ -29,15 +25,8 @@ If you have any requirements or dependencies, add a section describing those and
 * `betterOpenEditors.ShowWorkspaceIcon`  
    Shows a Package Icon in front of packages.
 * `betterOpenEditors.PackagePatterns`  
-   One regular expression per line which creates a package folder if a parent path of a file matches it, e.g. `packages/[^/]+$`. Useful for workspace dependent settings.
+   One glob expression per line which creates a package folder if a parent path of a file matches it, e.g. `**/components/*`. Useful in workspace dependent settings.
 
 ## Known Issues
 
 * Meta tabs like the "Settings" tab are currently not visible as the API does not offer a possibility to the internal URI of those tabs.
-
-## Release Notes
-
-### 1.0.0
-
-Initial release
-
