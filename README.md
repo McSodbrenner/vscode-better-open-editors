@@ -4,8 +4,7 @@ This is a replacement for the Open Editors panel, which becomes very cluttered w
 
 Therefore this extension helps by grouping the open files in package folders.
 
-
-\!\[This is why it is better\]\(meta/screenshot.fw.png\)
+![This is why it is better](./meta/screenshot.fw.png)
 
 ## Features
 
