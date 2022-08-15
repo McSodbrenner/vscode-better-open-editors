@@ -9,9 +9,10 @@ Therefore this extension helps by grouping the open files in package folders.
 
 ## Features
 
+  * Platform independent.
   * Automatically detects packages with a package.json.
   * Specification of RegExp patterns to build custom package folders.
-  * Supports multiple workspace folders. 
+  * Supports multiple workspace folders.
 
 
 ## Requirements

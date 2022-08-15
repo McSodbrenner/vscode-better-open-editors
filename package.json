@@ -2,13 +2,25 @@
   "name": "better-open-editors",
   "displayName": "Better Open Editors",
   "description": "Groups open editors by package folders.",
-  "keywords": ["editors", "tabs", "groups", "packages", "monorepo"],
+  "keywords": [
+    "editors",
+    "tabs",
+    "groups",
+    "packages",
+    "monorepo"
+  ],
   "version": "1.0.0",
+  "preview": true,
   "license": "MIT",
+  "icon": "meta/icon.fw.png",
   "repository": "https://github.com/McSodbrenner/vscode-better-open-editors",
-  "engines": { "vscode": "^1.69.0" },
+  "engines": {
+    "vscode": "^1.69.0"
+  },
   "publisher": "McSodbrenner",
-  "categories": [ "Other" ],
+  "categories": [
+    "Other"
+  ],
   "activationEvents": [
     "*"
   ],
@@ -39,17 +51,11 @@
           "order": 4,
           "type": "string",
           "editPresentation": "multilineText",
-          "default": "",
-          "description": "One regular expression per line which creates a package folder if a parent path of a file matches it, e.g. 'packages/[^/]+$'. Useful for workspace dependent settings."
+          "default": "**/components/*\n**/modules/*",
+          "description": "One glob expression per line which creates a package folder if a parent path of a file matches it, e.g. '**/components/*'. Useful in workspace dependent settings."
         }
       }
     },
-    "viewsWelcome": [
-      {
-        "view": "betterOpenEditors",
-        "contents": "You have not yet opened a folder.\n[Open Folder](command:vscode.openFolder)"
-      }
-    ],
     "views": {
       "explorer": [
         {
@@ -83,6 +89,7 @@
     "eslint": "^8.20.0"
   },
   "dependencies": {
-    "lodash.orderby": "^4.6.0"
+    "lodash.orderby": "^4.6.0",
+    "minimatch": "^5.1.0"
   }
 }
