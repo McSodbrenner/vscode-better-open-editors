@@ -7,7 +7,7 @@ module.exports = class WorkspaceFolderItem {
         this.contextValue       = "workspaceFolder";
         this.id                 = uri.path;
         this.path               = helper.normalizePath(uri.path);
-        this.pathLowercase      = this.path.toLowerCase();
+        this.sortKey            = helper.normalizePath(uri.path).toLowerCase();
         this.collapsibleState   = vscode.TreeItemCollapsibleState.Expanded;
         
         this.parent             = parent;

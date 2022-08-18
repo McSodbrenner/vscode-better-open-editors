@@ -6,25 +6,47 @@ const helper    = require ('./helpers');
 module.exports = class FileItem {
     constructor(item, parent) {
         this.contextValue       = 'file';
-        this.id                 = item.uri.path;
-        this.path               = helper.normalizePath(item.uri.path);
-        this.pathLowercase      = this.path.toLowerCase();
         this.collapsibleState   = vscode.TreeItemCollapsibleState.None;
-
         this.parent             = parent;
-
         this.isPinned           = item.isPinned;
 
-        // necessary to automatically get the correct file icons
-        this.resourceUri        = item.uri;
-        this.command = {
-            command: "vscode.open",
-            title: "Open",
-            arguments: [item.uri],
+        // standard items
+        if  (typeof item.input.uri !== "undefined") {
+            this.id             = helper.getId(item.input);
+            this.sortKey        = helper.getPath(item.input).toLowerCase();
+            this.internalLabel  = helper.getPath(item.input);
+            this.resourceUri    = item.input.uri;
+            this.command = {
+                command: "vscode.open",
+                title: "Open",
+                arguments: [item.input.uri],
+            }
+
+        // two editors items
+        } else if (typeof item.input.original !== "undefined") {
+            this.id             = helper.getId(item.input);
+            this.sortKey        = helper.getPath(item.input).toLowerCase();
+            this.internalLabel  = helper.getPath(item.input);
+            this.resourceUri    = item.input.modified;
+            this.command = {
+                command: "vscode.diff",
+                title: "Open",
+                arguments: [item.input.original, item.input.modified],
+            }
+
+            // add description
+            try {
+                if (item.input.original.scheme === "file") {
+                    this.internalLabel += ` ↔ ${$path.basename(item.input.modified.path)}`;
+                } else if (item.input.original.scheme === "gitlens") {
+                    this.description = `${JSON.parse(item.input.original.query).ref} - ${JSON.parse(item.input.modified.query).ref}`;
+                }
+            } catch(e) {
+                this.description = "Case not handled";
+            }
         }
 
-
-        this.internalLabel      = this.path.replace(this.parent.path + $path.sep, "");
+        this.internalLabel      = this.internalLabel.replace(this.parent.path + $path.sep, "");
         this.internalLabel      = this.internalLabel.replace($os.homedir(), "~");
 
         this.updateIcon(item);

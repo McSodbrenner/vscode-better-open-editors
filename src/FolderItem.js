@@ -1,13 +1,14 @@
 const vscode    = require('vscode');
 const $os       = require('os');
 const $path     = require('path');
+const helper    = require ('./helpers');
 
 module.exports = class FolderItem {
     constructor(path, parent = null, packageJson = null) {
         this.contextValue       = "folder";
         this.id                 = path;
         this.path               = path;
-        this.pathLowercase      = path.toLowerCase();
+        this.sortKey            = helper.normalizePath(path).toLowerCase();
         this.collapsibleState   = vscode.TreeItemCollapsibleState.Expanded;
         
         this.parent             = parent;

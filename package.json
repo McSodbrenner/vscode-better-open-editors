@@ -9,7 +9,7 @@
     "packages",
     "monorepo"
   ],
-  "version": "1.0.2",
+  "version": "1.0.3",
   "preview": true,
   "license": "MIT",
   "icon": "meta/icon.fw.png",
@@ -75,6 +75,7 @@
       "view/title": [
         {
           "command": "betterOpenEditors.openExtensionSettings",
+          "when": "view == betterOpenEditors",
           "group": "navigation"
         }
       ]

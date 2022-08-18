@@ -1,8 +1,12 @@
 const vscode = require('vscode');
 require('./dataprovider');
 
-function activate() {
+function activate(context) {
 	vscode.commands.registerCommand('betterOpenEditors.openExtensionSettings', () => {
+		// the correct way but does not keep the correct order
+		// vscode.commands.executeCommand('workbench.action.openSettings', '@ext:McSodbrenner.better-open-editors');
+
+		// TOOO: Warum überschreibt mein Settings-Command den von TODOS???
 		vscode.commands.executeCommand('workbench.action.openSettings', 'betterOpenEditors.');
 	});
 

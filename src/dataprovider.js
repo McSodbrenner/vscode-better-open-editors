@@ -1,12 +1,12 @@
-const vscode = require('vscode');
-const $path = require('path');
-const $fs = require('fs');
-const orderBy = require('lodash.orderby');
-const minimatch = require('minimatch');
-const helper = require ('./helpers');
-const FileItem = require('./FileItem.js');
-const FolderItem = require('./FolderItem.js');
-const WorkspaceFolderItem = require('./WorkspaceFolderItem.js');
+const vscode                = require('vscode');
+const $path                 = require('path');
+const $fs                   = require('fs');
+const orderBy               = require('lodash.orderby');
+const minimatch             = require('minimatch');
+const helper                = require ('./helpers');
+const FileItem              = require('./FileItem.js');
+const FolderItem            = require('./FolderItem.js');
+const WorkspaceFolderItem   = require('./WorkspaceFolderItem.js');
 
 let treeview;
 let tree;
@@ -45,46 +45,46 @@ class DataProvider {
 
 function recreateTree(initial = false) {
     // console.log("###", "recreateTree", (new Date).toLocaleTimeString());
-    
-    let rootPath = "/";
-    if (vscode.workspace.workspaceFolders) {
-        const ws = vscode.workspace.workspaceFolders;
-        if (ws.length === 1) {
-            rootPath = helper.normalizePath(ws[0].uri.path);
-        }
-    }
 
-    tree = new FolderItem(rootPath);
-    
     flat = {
         'workspaceFolders': {},
         'folders': {},
         'files': {},
     };
+
+    // create the root that we don't display in the GUI but has a children member we add our items to, and a path that is used to shorten the labels of the tree items
+    let rootPath = "/";
+    if (typeof vscode.workspace.workspaceFolders !== "undefined") {
+        const ws = vscode.workspace.workspaceFolders;
+        if (ws.length === 1) {
+            rootPath = helper.getPath(ws[0]);
+        }
+    }
+    tree = new FolderItem(rootPath);
+    
     
     let tabs = vscode.window.tabGroups.all.map(group => group.tabs).flat();
+
+    // console.log(tabs);
 
     // filter virtual elements like "Keyboard Shortcuts"
     tabs = tabs.filter(tab => typeof tab.input !== "undefined");
 
-    // simplify items to the values we need
-    tabs = tabs.map(tab => ({
-        uri: tab.input.uri,
-        pathLowercase: tab.input.uri.path.toLowerCase(), // just for sorting
-        isDirty: tab.isDirty,
-        isActive: tab.isActive,
-        isPinned: tab.isPinned,
-        isPreview: tab.isPreview,
-    }));
-
-    // sort items
-    tabs = orderBy(tabs, ['pathLowercase', 'asc']);
-
     // created nested Tree
     tabs.forEach(tab => {
-        addItem(tab);
+        addTabToTree(tab);
     });
 
+    // iterate all flat.workspaces and flat.folders and sort content (first show folders and then files)
+    tree.children = orderBy(tree.children, ['contextValue', 'sortKey'], ['desc', 'asc']);
+
+    for (const path in flat.workspaceFolders) {
+        flat.workspaceFolders[path].children = orderBy(flat.workspaceFolders[path].children, ['contextValue', 'sortKey'], ['desc', 'asc']);
+    }
+    for (const path in flat.folders) {
+        flat.folders[path].children = orderBy(flat.folders[path].children, ['contextValue', 'sortKey'], ['desc', 'asc']);
+    }
+    
     if (initial) {
         treeview = vscode.window.createTreeView('betterOpenEditors', {
             treeDataProvider: dataProvider
@@ -95,28 +95,28 @@ function recreateTree(initial = false) {
 
         // highlight currently active editor
         dataProvider.refresh();
-        treeview.reveal(flat.files[helper.normalizePath(vscode.window.activeTextEditor.document.uri.path)]);
+        treeview.reveal(flat.files[helper.getId(vscode.window.activeTextEditor.document)]);
     } else {
         dataProvider.refresh();
     }
     // console.log("treeCreated", tree);
 }
 
-function addItem(item) {
+function addTabToTree(item) {
     const config = vscode.workspace.getConfiguration("betterOpenEditors");
+    const itemPath = helper.getPath(item.input);
 
     // we use parent to know to which item we have to add the next level
     let parent = tree;
     let workspaceFolder = null;
     let folder = null;
-    const itemPath = helper.normalizePath(item.uri.path);
 
     // check if the file is part of a workspace folder
     // could be undefined
     if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 1) {
         // iterate through all workspaces to find the matching one
         vscode.workspace.workspaceFolders.every(_workspace => {
-            const workspacePath = helper.normalizePath(_workspace.uri.path);
+            const workspacePath = helper.getPath(_workspace);
             // we need to add the path sep to be sure it is the correct workspace
             // otherwise a file "workspace2/foo.bar" would macht "workspace", because the "2" is ignored
             if (itemPath.startsWith(workspacePath + $path.sep)) {
@@ -164,14 +164,11 @@ function addItem(item) {
     // at least add the file item
     let file;
     file = new FileItem(item, parent);
-    flat.files[itemPath] = file;
+    flat.files[file.id] = file;
     file.workspaceFolder = workspaceFolder;
     file.folder = folder;
 
     parent.children.push(file);
-
-    // sort parents children
-    parent.children = orderBy(parent.children, ['pathLowercase', 'asc']);
 
     return file;
 }
@@ -192,36 +189,31 @@ vscode.workspace.onDidChangeTextDocument(changed => {
     if (changed.contentChanges.length !== 0) return;
 
     // search for the item and update it
-    flat.files[helper.normalizePath(changed.document.uri.path)].updateIcon(changed.document);
-
-    dataProvider.refresh();
+    const fileItem = flat.files[helper.getId(changed.document)];
+    if (fileItem) {
+        fileItem.updateIcon(changed.document);
+        dataProvider.refresh();
+    }
 });
 
 vscode.window.tabGroups.onDidChangeTabs(tabs => {
     if (tabs.opened.length || tabs.closed.length) {
         recreateTree();
     }
+
     if (tabs.changed.length) {
         tabs.changed.forEach(tab => {
             // if the new page is an internal page (e.g. the Settings page, input is empty)
             if (typeof tab.input === "undefined") return;
-            
+
             // update the icon
-            flat.files[helper.normalizePath(tab.input.uri.path)].updateIcon(tab);
+            const fileItem = flat.files[helper.getId(tab.input)];
+            fileItem.updateIcon(tab);
+            dataProvider.refresh();
+
+            treeview.reveal(fileItem);
         })
     }
-
-    dataProvider.refresh();
-});
-
-// highlight currently active editor
-vscode.window.onDidChangeActiveTextEditor(editor => {
-    if (typeof editor === "undefined") return; // if we change to the settings tab, editor is undefined
-    if (editor.document.uri.scheme !== "file") return;
-    
-    // highlight currently active editor
-    if (!vscode.window.activeTextEditor) return;
-    treeview.reveal(flat.files[helper.normalizePath(vscode.window.activeTextEditor.document.uri.path)]);
 });
 
 const dataProvider = new DataProvider();

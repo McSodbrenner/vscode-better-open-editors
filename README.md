@@ -14,6 +14,12 @@ Therefore this extension helps by grouping the open files in package folders.
   * Supports multiple workspace folders.
 
 
+## Package folder generation
+
+The purpose of the extension is to represent the files in their packages. For this it is looked whether there is a package.json in a folder or whether a package corresponds to a glob pattern from the settings.
+If indeed all folders should be displayed as package folders, it is also possible to pass `**` as pattern.
+Package folders, which only contain other folders, are not created.
+
 ## Extension Settings
 
 * `betterOpenEditors.InsertSpacesAroundSlashes`  
@@ -30,3 +36,4 @@ Therefore this extension helps by grouping the open files in package folders.
 ## Known Issues
 
 * Meta tabs like the "Settings" tab are currently not visible as the API does not offer a possibility to the internal URI of those tabs.
+* Markdown preview tabs are not shown
