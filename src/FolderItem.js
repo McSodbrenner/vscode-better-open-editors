@@ -43,5 +43,13 @@ module.exports = class FolderItem {
         if (config.get("InsertSpacesAroundSlashes")) {
             this.label = this.label.replaceAll($path.sep, " " + $path.sep + " ");
         }
+
+        if (config.get("InsertSpaceForLastSlug")) {
+            const parts = this.label.split($path.sep);
+            if (parts.length > 1) {
+                const last = $path.sep + " " + parts.pop();
+                this.label = parts.join($path.sep) + last;
+            }
+        }
     }
 }

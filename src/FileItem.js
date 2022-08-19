@@ -70,11 +70,20 @@ module.exports = class FileItem {
             this.iconPath = new vscode.ThemeIcon("pinned-dirty");
         }
      
+        this.label = this.internalLabel;
+
         if (config.get("InsertSpacesAroundSlashes")) {
-            this.label = this.internalLabel.replaceAll($path.sep, " " + $path.sep + " ");
-        } else {
-            this.label = this.internalLabel;
+            this.label = this.label.replaceAll($path.sep, " " + $path.sep + " ");
         }
+
+        if (config.get("InsertSpaceForLastSlug")) {
+            const parts = this.label.split($path.sep);
+            if (parts.length > 1) {
+                const last = $path.sep + " " + parts.pop();
+                this.label = parts.join($path.sep) + last;
+            }
+        }
+
         this.label = tab.isPreview ? this.makeItalic(this.label) : this.label;
     }
 

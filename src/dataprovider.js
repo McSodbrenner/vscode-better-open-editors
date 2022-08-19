@@ -175,7 +175,7 @@ function addTabToTree(item) {
 
 vscode.workspace.onDidChangeConfiguration((item) => {
     if (
-        item.affectsConfiguration("betterOpenEditors.InsertSpacesAroundSlashes")
+        item.affectsConfiguration("betterOpenEditors.InsertSpaceForLastSlug")
         || item.affectsConfiguration("betterOpenEditors.ShowWorkspaceIcon")
         || item.affectsConfiguration("betterOpenEditors.ShowPackageIcon")
         || item.affectsConfiguration("betterOpenEditors.PackagePatterns")
