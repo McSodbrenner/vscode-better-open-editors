@@ -7,5 +7,8 @@
 			"path": "workspace2"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"betterOpenEditors.InsertSpaceForLastSlug": false,
+		"betterOpenEditors.InsertSpacesAroundSlashes": false
+	}
 }

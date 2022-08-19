@@ -1,5 +1,8 @@
 # Better Open Editors
 
-- [ ] Setting: Separate only last slash with a space
-- [ ] Setting: File in folder triggers package folder (package.json, composer.json, ...)
-- [ ] Display Markdown preview as tabs
+### Todo
+
+- Setting: File in folder triggers package folder (package.json, composer.json, ...)  
+- Groups are ignored at the moment  
+- Upstream issue: The order is not taken into account when calling the extension settings directly via @ext:McSodbrenner.better-open-editors  
+- Upstream issue: tab.input.constructor.name is just "ui" instead of TabInputCustom  

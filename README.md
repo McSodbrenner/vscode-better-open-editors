@@ -22,6 +22,8 @@ Package folders, which only contain other folders, are not created.
 
 ## Extension Settings
 
+* `betterOpenEditors.InsertSpaceForLastSlug`  
+   Insert space before the last slug to improve the readability.
 * `betterOpenEditors.InsertSpacesAroundSlashes`  
    Insert spaces around path slashes to improve the readability.
 * `betterOpenEditors.ShowWorkspaceIcon`  
@@ -36,4 +38,4 @@ Package folders, which only contain other folders, are not created.
 ## Known Issues
 
 * Meta tabs like the "Settings" tab are currently not visible as the API does not offer a possibility to the internal URI of those tabs.
-* Markdown preview tabs are not shown
+* Groups are not shown
