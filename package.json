@@ -72,15 +72,25 @@
     },
     "commands": [
       {
+        "command": "betterOpenEditors.refreshTree",
+        "title": "Refresh tree",
+        "icon": "$(refresh)"
+      },
+      {
         "command": "betterOpenEditors.openExtensionSettings",
         "title": "Open settings",
-        "icon": "$(gear)"
+        "icon": "$(settings-gear)"
       }
     ],
     "menus": {
       "view/title": [
         {
           "command": "betterOpenEditors.openExtensionSettings",
+          "when": "view == betterOpenEditors",
+          "group": "navigation"
+        },
+        {
+          "command": "betterOpenEditors.refreshTree",
           "when": "view == betterOpenEditors",
           "group": "navigation"
         }

@@ -12,6 +12,17 @@ let treeview;
 let tree;
 let flat;
 
+vscode.commands.registerCommand('betterOpenEditors.openExtensionSettings', () => {
+    // the correct way but does not keep the correct order
+    // vscode.commands.executeCommand('workbench.action.openSettings', '@ext:McSodbrenner.better-open-editors');
+    vscode.commands.executeCommand('workbench.action.openSettings', 'betterOpenEditors.');
+});
+
+vscode.commands.registerCommand('betterOpenEditors.refreshTree', () => {
+    dataProvider.refresh();
+});
+
+
 class DataProvider {
     constructor() {
         this._onDidChangeTreeData = new vscode.EventEmitter();
@@ -64,8 +75,6 @@ function recreateTree(initial = false) {
     
     
     let tabs = vscode.window.tabGroups.all.map(group => group.tabs).flat();
-
-    // console.log(tabs);
 
     // filter virtual elements like "Keyboard Shortcuts"
     tabs = tabs.filter(tab => typeof tab.input !== "undefined");
@@ -176,6 +185,7 @@ function addTabToTree(item) {
 vscode.workspace.onDidChangeConfiguration((item) => {
     if (
         item.affectsConfiguration("betterOpenEditors.InsertSpaceForLastSlug")
+        || item.affectsConfiguration("betterOpenEditors.InsertSpacesAroundSlashes")
         || item.affectsConfiguration("betterOpenEditors.ShowWorkspaceIcon")
         || item.affectsConfiguration("betterOpenEditors.ShowPackageIcon")
         || item.affectsConfiguration("betterOpenEditors.PackagePatterns")
