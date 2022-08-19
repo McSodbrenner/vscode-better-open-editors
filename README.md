@@ -9,7 +9,7 @@ Therefore this extension helps by grouping the open files in package folders.
 ## Features
 
   * Platform independent.
-  * Automatically detects packages with a package.json.
+  * Automatically detects packages (package.json, composer.json).
   * Specification of RegExp patterns to build custom package folders.
   * Supports multiple workspace folders.
 

@@ -4,7 +4,7 @@ const $path     = require('path');
 const helper    = require ('./helpers');
 
 module.exports = class FolderItem {
-    constructor(path, parent = null, packageJson = null) {
+    constructor(path, parent = null, packageData = null) {
         this.contextValue       = "folder";
         this.id                 = path;
         this.path               = path;
@@ -15,9 +15,8 @@ module.exports = class FolderItem {
         this.children           = [];
 
         // add package description
-        this.packageJson        = packageJson;
-        if (this.packageJson) {
-            this.description    = packageJson.name + ' ' + packageJson.version;
+        if (packageData) {
+            this.description    = packageData;
         }
         
         // config dependent members

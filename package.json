@@ -85,12 +85,12 @@
     "menus": {
       "view/title": [
         {
-          "command": "betterOpenEditors.openExtensionSettings",
+          "command": "betterOpenEditors.refreshTree",
           "when": "view == betterOpenEditors",
           "group": "navigation"
         },
         {
-          "command": "betterOpenEditors.refreshTree",
+          "command": "betterOpenEditors.openExtensionSettings",
           "when": "view == betterOpenEditors",
           "group": "navigation"
         }

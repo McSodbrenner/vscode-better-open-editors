@@ -1,6 +1,5 @@
 const vscode                = require('vscode');
 const $path                 = require('path');
-const $fs                   = require('fs');
 const orderBy               = require('lodash.orderby');
 const minimatch             = require('minimatch');
 const helper                = require ('./helpers');
@@ -19,7 +18,7 @@ vscode.commands.registerCommand('betterOpenEditors.openExtensionSettings', () =>
 });
 
 vscode.commands.registerCommand('betterOpenEditors.refreshTree', () => {
-    dataProvider.refresh();
+    recreateTree();
 });
 
 
@@ -151,16 +150,14 @@ function addTabToTree(item) {
         // second parts mean: if we have only one path separator in the path (the case on Mac for "/" and on Windows for "\")
         if (path === parent.path || path.split($path.sep).length - 1 === 1) break;
         
-        const packageJsonPath = $path.join(path, "package.json");
-        const packageJsonMatch = $fs.existsSync(packageJsonPath);
+        const packageData = helper.getPackageData(path);
         const patternMatch = packagePatterns.filter(pattern => { return minimatch(path, pattern); } ).length > 0;
 
-        if (packageJsonMatch || patternMatch) {
+        if (packageData || patternMatch) {
             if (flat.folders[path]) {
                 folder = flat.folders[path];
             } else {
-                const packageJson = packageJsonMatch ? JSON.parse($fs.readFileSync(packageJsonPath, { encoding:'utf8', flag:'r' })) : null;
-                folder = new FolderItem(path, parent, packageJson);
+                folder = new FolderItem(path, parent, packageData);
                 flat.folders[path] = folder;
                 parent.children.push(folder);
             }

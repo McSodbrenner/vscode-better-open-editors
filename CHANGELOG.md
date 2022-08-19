@@ -29,5 +29,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
  * Feature: Added "Refresh tree" button
  * Feature: New setting: Separate last slug with a space to improve readability
+ * Fix: "Refresh tree" did not work
 
 

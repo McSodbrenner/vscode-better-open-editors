@@ -39,7 +39,7 @@ module.exports = class FileItem {
                 if (item.input.original.scheme === "file") {
                     this.internalLabel += ` ↔ ${$path.basename(item.input.modified.path)}`;
                 } else if (item.input.original.scheme === "gitlens") {
-                    this.description = `${JSON.parse(item.input.original.query).ref} - ${JSON.parse(item.input.modified.query).ref}`;
+                    this.description = `${JSON.parse(item.input.original.query).ref} 🠖 ${JSON.parse(item.input.modified.query).ref}`;
                 }
             } catch(e) {
                 this.description = "Case not handled";
