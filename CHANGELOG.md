@@ -16,7 +16,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### 1.0.2
 
- * Just some non code relevant corrections for the release
+ * Chore: Just some non code relevant corrections for the release
 
 ### 1.0.3
 
@@ -24,5 +24,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
  * Fix: Gitlens and standard file diffs are now displayed
  * Fix: New files support improved
  * Fix: File/folder sorting improved
+
+### 1.1.0
+
+ * Feature: Added "Refresh tree" button
+ * Feature: New setting: Separate last slug with a space to improve readability
 
 
