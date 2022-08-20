@@ -5,6 +5,8 @@ const helper    = require ('./helpers');
 
 module.exports = class FolderItem {
     constructor(path, parent = null, packageData = null) {
+        const config = vscode.workspace.getConfiguration("betterOpenEditors");
+        
         this.contextValue       = "folder";
         this.id                 = path;
         this.path               = path;
@@ -15,13 +17,11 @@ module.exports = class FolderItem {
         this.children           = [];
 
         // add package description
-        if (packageData) {
+        if (packageData && config.get("ShowPackageInfo")) {
             this.description    = packageData;
         }
         
         // config dependent members
-        const config = vscode.workspace.getConfiguration("betterOpenEditors");
-        
         if (config.get("ShowPackageIcon")) {
             this.iconPath = new vscode.ThemeIcon("package");   
         } else {
@@ -31,8 +31,7 @@ module.exports = class FolderItem {
         // add label
         this.label = this.path;
         if (this.parent !== null) {
-            this.label = this.label.replace(this.parent.path, "");
-            this.label = this.label.replace($path.sep, "");
+            this.label = this.label.replace(this.parent.path + $path.sep, "");
         }
 
         // replace homedir
@@ -50,5 +49,5 @@ module.exports = class FolderItem {
                 this.label = parts.join($path.sep) + last;
             }
         }
-    }
+   }
 }

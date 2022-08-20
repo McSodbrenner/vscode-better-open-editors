@@ -59,6 +59,18 @@
           "editPresentation": "multilineText",
           "default": "**/components/*\n**/modules/*",
           "description": "One glob expression per line which creates a package folder if a parent path of a file matches it, e.g. '**/components/*'. Useful in workspace dependent settings."
+        },
+        "betterOpenEditors.ShowPackageInfo": {
+          "order": 6,
+          "type": "boolean",
+          "default": true,
+          "description": "Shows name and version if there is a package file."
+        },
+        "betterOpenEditors.SkipWorkspacesIfNotNeeded": {
+          "order": 7,
+          "type": "boolean",
+          "default": true,
+          "description": "Skips the workspace tree level if you have only one folder opened. But it could be useful to disable this setting if you want to see the package info for the workspace folder."
         }
       }
     },

@@ -3,7 +3,9 @@ const path      = require('path');
 const helper    = require ('./helpers');
 
 module.exports = class WorkspaceFolderItem {
-    constructor(uri, parent) {
+    constructor(uri, parent, packageData) {
+        const config            = vscode.workspace.getConfiguration("betterOpenEditors");
+
         this.contextValue       = "workspaceFolder";
         this.id                 = uri.path;
         this.path               = helper.normalizePath(uri.path);
@@ -13,10 +15,13 @@ module.exports = class WorkspaceFolderItem {
         this.parent             = parent;
         this.children           = [];
 
+        // add package description
+        if (packageData && config.get("ShowPackageInfo")) {
+            this.description    = packageData;
+        }
+
         this.label              = path.basename(this.path);
 
-        const config            = vscode.workspace.getConfiguration("betterOpenEditors");
-        
         // config dependent members
         if (config.get("ShowWorkspaceIcon")) {
             this.iconPath = new vscode.ThemeIcon("root-folder");

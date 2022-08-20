@@ -121,7 +121,7 @@ function addTabToTree(item) {
 
     // check if the file is part of a workspace folder
     // could be undefined
-    if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 1) {
+    if (vscode.workspace.workspaceFolders && (vscode.workspace.workspaceFolders.length > 1 || !config.get('SkipWorkspacesIfNotNeeded'))) {
         // iterate through all workspaces to find the matching one
         vscode.workspace.workspaceFolders.every(_workspace => {
             const workspacePath = helper.getPath(_workspace);
@@ -131,7 +131,8 @@ function addTabToTree(item) {
                 if (flat.workspaceFolders[workspacePath]) {
                     workspaceFolder = flat.workspaceFolders[workspacePath];
                 } else {
-                    workspaceFolder = new WorkspaceFolderItem(_workspace.uri, parent);
+                    const packageData = helper.getPackageData(workspacePath);
+                    workspaceFolder = new WorkspaceFolderItem(_workspace.uri, parent, packageData);
                     flat.workspaceFolders[workspacePath] = workspaceFolder;
                     parent.children.push(workspaceFolder);
                 }
@@ -186,6 +187,8 @@ vscode.workspace.onDidChangeConfiguration((item) => {
         || item.affectsConfiguration("betterOpenEditors.ShowWorkspaceIcon")
         || item.affectsConfiguration("betterOpenEditors.ShowPackageIcon")
         || item.affectsConfiguration("betterOpenEditors.PackagePatterns")
+        || item.affectsConfiguration("betterOpenEditors.ShowPackageInfo")
+        || item.affectsConfiguration("betterOpenEditors.SkipWorkspacesIfNotNeeded")
     ) {
         recreateTree();
     }
@@ -221,6 +224,11 @@ vscode.window.tabGroups.onDidChangeTabs(tabs => {
             treeview.reveal(fileItem);
         })
     }
+});
+
+// recreate tree if a workspace folder was added/removed
+vscode.workspace.onDidChangeWorkspaceFolders(() => {
+    recreateTree();
 });
 
 const dataProvider = new DataProvider();
