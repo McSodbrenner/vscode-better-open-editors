@@ -6,6 +6,7 @@ const helper                = require ('./helpers');
 const FileItem              = require('./FileItem.js');
 const FolderItem            = require('./FolderItem.js');
 const WorkspaceFolderItem   = require('./WorkspaceFolderItem.js');
+const package               = require('../package.json');
 
 let treeview;
 let tree;
@@ -181,16 +182,10 @@ function addTabToTree(item) {
 }
 
 vscode.workspace.onDidChangeConfiguration((item) => {
-    if (
-        item.affectsConfiguration("betterOpenEditors.InsertSpaceForLastSlug")
-        || item.affectsConfiguration("betterOpenEditors.InsertSpacesAroundSlashes")
-        || item.affectsConfiguration("betterOpenEditors.ShowWorkspaceIcon")
-        || item.affectsConfiguration("betterOpenEditors.ShowPackageIcon")
-        || item.affectsConfiguration("betterOpenEditors.PackagePatterns")
-        || item.affectsConfiguration("betterOpenEditors.ShowPackageInfo")
-        || item.affectsConfiguration("betterOpenEditors.SkipWorkspacesIfNotNeeded")
-    ) {
-        recreateTree();
+    for (const configurationPropertyName in package.contributes.configuration.properties) {
+        if (item.affectsConfiguration(configurationPropertyName)) {
+            recreateTree();
+        }
     }
 });
 
