@@ -10,7 +10,7 @@
     "monorepo"
   ],
   "version": "1.1.0",
-  "preview": true,
+  "preview": false,
   "license": "MIT",
   "icon": "meta/icon.png",
   "repository": "https://github.com/McSodbrenner/vscode-better-open-editors",

@@ -49,5 +49,5 @@ module.exports = class FolderItem {
                 this.label = parts.join($path.sep) + last;
             }
         }
-   }
+    }
 }
