@@ -12,7 +12,7 @@
   "version": "1.0.3",
   "preview": true,
   "license": "MIT",
-  "icon": "meta/icon.fw.png",
+  "icon": "meta/icon.png",
   "repository": "https://github.com/McSodbrenner/vscode-better-open-editors",
   "engines": {
     "vscode": "^1.69.0"

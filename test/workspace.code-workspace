@@ -2,13 +2,8 @@
 	"folders": [
 		{
 			"path": "workspace"
-		},
-		{
-			"path": "workspace2"
 		}
 	],
 	"settings": {
-		"betterOpenEditors.InsertSpaceForLastSlug": false,
-		"betterOpenEditors.InsertSpacesAroundSlashes": false
 	}
 }

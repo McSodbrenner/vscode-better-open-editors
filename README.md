@@ -4,7 +4,7 @@ This is a replacement for the Open Editors panel, which becomes very cluttered w
 
 Therefore this extension helps by grouping the open files in package folders.
 
-![This is why it is better](./meta/screenshot.fw.png)
+![This is why it is better](./meta/screenshot.gif)
 
 ## Features
 
@@ -34,8 +34,13 @@ Package folders, which only contain other folders, are not created.
    Shows a Package Icon in front of packages.
 * `betterOpenEditors.PackagePatterns`  
    One glob expression per line which creates a package folder if a parent path of a file matches it, e.g. `**/components/*`. Useful in workspace dependent settings.
+* `betterOpenEditors.ShowPackageInfo`  
+   Shows name and version if there is a package file.
+* `betterOpenEditors.SkipWorkspacesIfNotNeeded`  
+   Skips the workspace tree level if you have only one folder opened. But it could be useful to disable this setting if you want to see the package info for the workspace folder.
+
 
 ## Known Issues
 
 * Meta tabs like the "Settings" tab are currently not visible as the API does not offer a possibility to the internal URI of those tabs.
-* Groups are not shown
+* Tab groups are not shown.

@@ -28,7 +28,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### 1.1.0
 
  * Feature: Added "Refresh tree" button
- * Feature: New setting: Separate last slug with a space to improve readability
- * Fix: "Refresh tree" did not work
-
-
+ * Feature: New setting `betterOpenEditors.InsertSpaceForLastSlug`: Insert space before the last slug to improve the readability.
+ * Feature: New setting `betterOpenEditors.ShowPackageInfo`: Shows name and version if there is a package file.
+ * Feature: New setting `betterOpenEditors.SkipWorkspacesIfNotNeeded`: Skips the workspace tree level if you have only one folder opened. But it could be useful to disable this setting if you want to see the package info for the workspace folder.
+ 
