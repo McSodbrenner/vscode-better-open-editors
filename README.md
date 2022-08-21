@@ -30,8 +30,6 @@ Package folders, which only contain other folders, are not created.
    Shows a Workspace Icon in front of workspace folders.
 * `betterOpenEditors.ShowPackageIcon`  
    Shows a Workspace Icon in front of workspace folders.
-* `betterOpenEditors.ShowWorkspaceIcon`  
-   Shows a Package Icon in front of packages.
 * `betterOpenEditors.PackagePatterns`  
    One glob expression per line which creates a package folder if a parent path of a file matches it, e.g. `**/components/*`. Useful in workspace dependent settings.
 * `betterOpenEditors.ShowPackageInfo`  
@@ -42,7 +40,7 @@ Package folders, which only contain other folders, are not created.
 
 ## Known Issues
 
-* Meta tabs like the "Settings" tab are currently not visible as the API does not offer a possibility to the internal URI of those tabs.
+* Meta tabs like the "Settings" tab are currently not visible as the API does not offer a possibility to get the internal URI of those tabs.
 
 ## Todo
 
