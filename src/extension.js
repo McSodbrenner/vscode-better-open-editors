@@ -1,5 +1,4 @@
-const vscode = require('vscode');
-require('./dataprovider');
+require('./treeviewPanel');
 
 function activate(context) {
 	// code for a close button / doesn't work proerly

@@ -41,11 +41,3 @@ Package folders, which only contain other folders, are not created.
 ## Known Issues
 
 * Meta tabs like the "Settings" tab are currently not visible as the API does not offer a possibility to get the internal URI of those tabs.
-
-## Todo
-
-- Bug: Click on "Open changes with previous revision" does not reveal new tab
-- Feature: It is eventually possible to refresh only the passed item (research in documentation).
-- Feature: Tab groups are ignored at the moment  
-- Upstream issue: The order is not taken into account when calling the extension settings directly via @ext:McSodbrenner.better-open-editors  
-- Upstream issue: tab.input.constructor.name is just "ui" instead of TabInputCustom  
