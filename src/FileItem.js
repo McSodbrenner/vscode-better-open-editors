@@ -40,6 +40,8 @@ module.exports = class FileItem {
                     this.internalLabel += ` ↔ ${$path.basename(item.input.modified.path)}`;
                 } else if (item.input.original.scheme === "gitlens") {
                     this.description = `${JSON.parse(item.input.original.query).ref} 🠖 ${JSON.parse(item.input.modified.query).ref}`;
+                } else if (item.input.original.scheme === "git") {
+                    this.description = `Changes`;
                 }
             } catch(e) {
                 this.description = "Case not handled";

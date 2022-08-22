@@ -2,9 +2,13 @@
 
 ## Release Notes
 
+### 1.1.2
+
+ * Feature: Improved handling for "git" input schemes.
+
 ### 1.1.1
 
- * Fix: Automatically refresh view on configuration changes
+ * Fix: Automatically refresh view on configuration changes.
  
 ### 1.1.0
 
