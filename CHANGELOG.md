@@ -5,6 +5,7 @@
 ### 1.1.2
 
  * Feature: Improved handling for "git" input schemes.
+ * Fix: Fixed sometimes not working reveal of tree items
 
 ### 1.1.1
 

@@ -100,15 +100,17 @@ function recreateTree(initial = false) {
         });
 
         // does not exist if the currently active item on startup is eg. the "Settings" editor
-        if (!vscode.window.activeTextEditor) return;
+        if (!vscode.window.tabGroups.activeTabGroup.activeTab.input) return;
 
-        // highlight currently active editor
         dataProvider.refresh();
-        treeview.reveal(flat.files[helper.getId(vscode.window.activeTextEditor.document)]);
-    } else {
-        dataProvider.refresh();
+
+        treeview.onDidChangeVisibility((event) => {
+            // highlight currently active editor
+            if (event.visible) {
+                treeview.reveal(flat.files[helper.getId(vscode.window.tabGroups.activeTabGroup.activeTab.input)]);
+            }
+        });
     }
-    // console.log("treeCreated", tree);
 }
 
 function addTabToTree(item) {
