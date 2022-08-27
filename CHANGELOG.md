@@ -2,9 +2,13 @@
 
 ## Release Notes
 
-### 1.1.3
+### 1.2.1
 
  * Fix: Empty documents do not longer open additional empty documents on click (fixes #6)
+
+### 1.2.0
+
+ * Invalid version
 
 ### 1.1.2
 
