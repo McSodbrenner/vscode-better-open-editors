@@ -2,6 +2,10 @@
 
 ## Release Notes
 
+### 1.1.3
+
+ * Fix: Empty documents do not longer open additional empty documents on click (fixes #6)
+
 ### 1.1.2
 
  * Feature: Improved handling for "git" input schemes.
