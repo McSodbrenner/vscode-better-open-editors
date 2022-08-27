@@ -92,6 +92,10 @@
         "command": "betterOpenEditors.openExtensionSettings",
         "title": "Open settings",
         "icon": "$(settings-gear)"
+      },
+      {
+        "command": "betterOpenEditors.showTab",
+        "title": "Show Tab"
       }
     ],
     "menus": {

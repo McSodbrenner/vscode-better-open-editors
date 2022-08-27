@@ -37,6 +37,10 @@ function activate(context) {
 	vscode.commands.registerCommand('betterOpenEditors.refreshTree', () => {
 		treeviewPanel.recreateTree();
 	});
+
+	vscode.commands.registerCommand('betterOpenEditors.showTab', (input) => {
+		vscode.window.showTextDocument(input, { preserveFocus: true });
+	});
 }
 
 // this method is called when your extension is deactivated

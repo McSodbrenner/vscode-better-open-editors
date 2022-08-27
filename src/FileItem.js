@@ -17,7 +17,7 @@ module.exports = class FileItem {
             this.internalLabel  = helper.getPath(item.input);
             this.resourceUri    = item.input.uri;
             this.command = {
-                command: "vscode.open",
+                command: "betterOpenEditors.showTab",
                 title: "Open",
                 arguments: [item.input.uri],
             }
@@ -27,7 +27,7 @@ module.exports = class FileItem {
             this.id             = helper.getId(item.input);
             this.sortKey        = helper.getPath(item.input).toLowerCase();
             this.internalLabel  = helper.getPath(item.input);
-            this.resourceUri    = item.input.modified;
+            this.resourceUri    = item.input.original;
             this.command = {
                 command: "vscode.diff",
                 title: "Open",
