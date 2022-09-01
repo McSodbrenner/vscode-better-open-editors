@@ -10,19 +10,22 @@ const WorkspaceFolderItem   = require('./WorkspaceFolderItem.js');
 const packageJson           = require('../package.json');
 
 module.exports = class TreeviewPanel {
-    tree;
+    #debugMode;
     #treeview;
     #flat;
     #dataProvider;
+    tree;
 
     constructor(context) {
+        this.#debugMode = context.extensionMode === vscode.ExtensionMode.Development;
         this.#dataProvider = new DataProvider(this);
-        this.recreateTree(true);
         this.#registerEvents();
+        this.recreateTree(true);
     }
 
     #registerEvents() {
         vscode.workspace.onDidChangeConfiguration((item) => {
+            this.#log("> vscode.workspace.onDidChangeConfiguration");
             for (const configurationPropertyName in packageJson.contributes.configuration.properties) {
                 if (item.affectsConfiguration(configurationPropertyName)) {
                     this.recreateTree();
@@ -31,6 +34,7 @@ module.exports = class TreeviewPanel {
         });
         
         vscode.workspace.onDidChangeTextDocument(changed => {
+            this.#log("> vscode.workspace.onDidChangeTextDocument");
             if (changed.document.uri.scheme !== 'file') return;
             if (changed.contentChanges.length !== 0) return;
         
@@ -43,7 +47,8 @@ module.exports = class TreeviewPanel {
         });
         
         vscode.window.tabGroups.onDidChangeTabs(tabs => {
-            if (tabs.opened.length || tabs.closed.length) {
+            this.#log("> vscode.window.tabGroups.onDidChangeTabs");
+            if (tabs.opened.length || tabs.closed.length) {
                 this.recreateTree();
             }
         
@@ -56,7 +61,6 @@ module.exports = class TreeviewPanel {
                     const fileItem = this.#flat.files[helper.getId(tab.input)];
                     fileItem.updateIcon(tab);
                     this.#dataProvider.refresh();
-        
                     this.#revealCurrentTab();
                 })
             }
@@ -64,12 +68,13 @@ module.exports = class TreeviewPanel {
         
         // recreate tree if a workspace folder was added/removed
         vscode.workspace.onDidChangeWorkspaceFolders(() => {
+            this.#log("> vscode.workspace.onDidChangeWorkspaceFolders");
             this.recreateTree();
         });
     }
 
     recreateTree(initial = false) {
-        // console.log("###", "recreateTree", (new Date).toLocaleTimeString());
+        this.#log("recreateTree", (new Date).toLocaleTimeString());
     
         this.#flat = {
             'workspaceFolders': {},
@@ -87,7 +92,10 @@ module.exports = class TreeviewPanel {
         }
         this.tree = new FolderItem(rootPath);
         
-        let tabs = vscode.window.tabGroups.all.map(group => group.tabs).flat();
+        // let tabs = vscode.window.tabGroups.all.map(group => group.tabs).flat();
+        // console.log(tabs);
+        let tabs = vscode.window.tabGroups.all[0].tabs;
+        console.log(tabs);
     
         // filter virtual elements like "Keyboard Shortcuts"
         tabs = tabs.filter(tab => typeof tab.input !== "undefined");
@@ -113,9 +121,8 @@ module.exports = class TreeviewPanel {
                 treeDataProvider: this.#dataProvider
             });
 
-            this.#dataProvider.refresh();
-    
             this.#treeview.onDidChangeVisibility((event) => {
+                this.#log("this.#treeview.onDidChangeVisibility");
                 // highlight currently active editor
                 if (event.visible) {
                     this.#revealCurrentTab();
@@ -127,6 +134,7 @@ module.exports = class TreeviewPanel {
     }
     
     #addTabToTree(item, config) {
+        this.#log("> #addTabToTree");
         const itemPath = helper.getPath(item.input);
     
         // we use parent to know to which item we have to add the next level
@@ -196,9 +204,19 @@ module.exports = class TreeviewPanel {
     }
     
     #revealCurrentTab() {
+        this.#log("> #revealCurrentTab");
         // does not exist if the currently active item on startup is eg. the "Settings" editor
-        if (!vscode.window.tabGroups.activeTabGroup.activeTab.input) return;
+        if (!vscode.window.tabGroups.activeTabGroup.activeTab.input) {
+            this.#log("#revealCurrentTab: There is no activeTab");
+            return;
+        }
 
         this.#treeview.reveal(this.#flat.files[helper.getId(vscode.window.tabGroups.activeTabGroup.activeTab.input)]);
+    }
+
+    #log() {
+        if (this.#debugMode) {
+            console.log.apply(this, arguments);
+        }
     }
 }
