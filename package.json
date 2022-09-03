@@ -22,7 +22,7 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onStartupFinished"
   ],
   "main": "./src/extension.js",
   "contributes": {
