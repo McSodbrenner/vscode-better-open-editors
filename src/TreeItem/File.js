@@ -1,10 +1,10 @@
 const vscode    = require('vscode');
 const $os       = require('os');
 const $path     = require('path');
-const helper    = require ('./helpers');
+const helper    = require ('../helpers');
 
-module.exports = class FileItem {
-    constructor(item, parent) {
+module.exports = class File {
+    constructor(item, parent, tabGroupIndex) {
         this.contextValue       = 'file';
         this.collapsibleState   = vscode.TreeItemCollapsibleState.None;
         this.parent             = parent;
@@ -12,19 +12,21 @@ module.exports = class FileItem {
 
         // standard items
         if  (typeof item.input.uri !== "undefined") {
-            this.id             = helper.getId(item.input);
+            this.id             = helper.getId(item);
             this.sortKey        = helper.getPath(item.input).toLowerCase();
             this.internalLabel  = helper.getPath(item.input);
             this.resourceUri    = item.input.uri;
+
             this.command = {
-                command: "betterOpenEditors.showTab",
+                // "untitled" files cannot be handled via vscode.open :(
+                command: item.input.uri.scheme === "untitled" ? "betterOpenEditors.showTab" : "vscode.open",
                 title: "Open",
-                arguments: [item.input.uri],
+                arguments: [item.input.uri, tabGroupIndex],
             }
 
         // two editors items
         } else if (typeof item.input.original !== "undefined") {
-            this.id             = helper.getId(item.input);
+            this.id             = helper.getId(item);
             this.sortKey        = helper.getPath(item.input).toLowerCase();
             this.internalLabel  = helper.getPath(item.input);
             this.resourceUri    = item.input.original;
@@ -86,18 +88,6 @@ module.exports = class FileItem {
             }
         }
 
-        this.label = tab.isPreview ? this.makeItalic(this.label) : this.label;
-    }
-
-    makeItalic(text) {
-        return text.replace(/[A-Za-z]/g, (char) => {
-            let diff;
-            if (/[A-Z]/.test(char)) {
-                diff = "𝘈".codePointAt(0) - "A".codePointAt(0);
-            } else {
-                diff = "𝘢".codePointAt(0) - "a".codePointAt(0);
-            }
-            return String.fromCodePoint(char.codePointAt (0) + diff);
-        });
+        this.label = tab.isPreview ? helper.makeItalic(this.label) : this.label;
     }
 }

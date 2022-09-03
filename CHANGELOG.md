@@ -2,9 +2,15 @@
 
 ## Release Notes
 
+### 1.3.0
+
+ * Feature: Added the possibility to use Tab groups.
+ * Feature: Improved handling for scheme "git" inputs.
+ * Fix: Fixed incorrect reveal of current item.
+
 ### 1.2.1
 
- * Fix: Empty documents do not longer open additional empty documents on click (fixes #6)
+ * Fix: Empty documents do not longer open additional empty documents on click (fixes #6).
 
 ### 1.2.0
 
@@ -13,7 +19,7 @@
 ### 1.1.2
 
  * Feature: Improved handling for "git" input schemes.
- * Fix: Fixed sometimes not working reveal of tree items
+ * Fix: Fixed sometimes not working reveal of tree items.
 
 ### 1.1.1
 

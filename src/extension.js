@@ -38,8 +38,8 @@ function activate(context) {
 		treeviewPanel.recreateTree();
 	});
 
-	vscode.commands.registerCommand('betterOpenEditors.showTab', (input) => {
-		vscode.window.showTextDocument(input, { preserveFocus: true });
+	vscode.commands.registerCommand('betterOpenEditors.showTab', (input, tabGroupIndex) => {
+		vscode.window.showTextDocument(input, tabGroupIndex, true);
 	});
 }
 

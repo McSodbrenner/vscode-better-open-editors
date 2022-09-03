@@ -4,9 +4,10 @@ const orderBy               = require('lodash.orderby');
 const minimatch             = require('minimatch');
 const helper                = require ('./helpers');
 const DataProvider          = require('./DataProvider.js');
-const FileItem              = require('./FileItem.js');
-const FolderItem            = require('./FolderItem.js');
-const WorkspaceFolderItem   = require('./WorkspaceFolderItem.js');
+const TabgroupItem          = require('./TreeItem/Tabgroup.js');
+const WorkspaceFolderItem   = require('./TreeItem/Workspace.js');
+const FolderItem            = require('./TreeItem/Folder.js');
+const FileItem              = require('./TreeItem/File.js');
 const packageJson           = require('../package.json');
 
 module.exports = class TreeviewPanel {
@@ -58,11 +59,21 @@ module.exports = class TreeviewPanel {
                     if (typeof tab.input === "undefined") return;
         
                     // update the icon
-                    const fileItem = this.#flat.files[helper.getId(tab.input)];
+                    const fileItem = this.#flat.files[helper.getId(tab)];
                     fileItem.updateIcon(tab);
                     this.#dataProvider.refresh();
                     this.#revealCurrentTab();
                 })
+            }
+        });
+
+        vscode.window.tabGroups.onDidChangeTabGroups(tabgroups => {
+            if (tabgroups.opened.length || tabgroups.closed.length) {
+                this.recreateTree();
+            }
+
+            if (tabgroups.changed.length) {
+                this.#revealCurrentTab();
             }
         });
         
@@ -77,6 +88,7 @@ module.exports = class TreeviewPanel {
         this.#log("recreateTree", (new Date).toLocaleTimeString());
     
         this.#flat = {
+            'tabGroups': {},
             'workspaceFolders': {},
             'folders': {},
             'files': {},
@@ -92,14 +104,12 @@ module.exports = class TreeviewPanel {
         }
         this.tree = new FolderItem(rootPath);
         
-        // let tabs = vscode.window.tabGroups.all.map(group => group.tabs).flat();
+        let tabs = vscode.window.tabGroups.all.map(group => group.tabs).flat();
         // console.log(tabs);
-        let tabs = vscode.window.tabGroups.all[0].tabs;
-        console.log(tabs);
-    
+        
         // filter virtual elements like "Keyboard Shortcuts"
         tabs = tabs.filter(tab => typeof tab.input !== "undefined");
-    
+
         // created nested Tree
         tabs.forEach(tab => {
             const config = vscode.workspace.getConfiguration("betterOpenEditors");
@@ -109,11 +119,14 @@ module.exports = class TreeviewPanel {
         // iterate all flat.workspaces and flat.folders and sort content (first show folders and then files)
         this.tree.children = orderBy(this.tree.children, ['contextValue', 'sortKey'], ['desc', 'asc']);
     
-        for (const path in this.#flat.workspaceFolders) {
-            this.#flat.workspaceFolders[path].children = orderBy(this.#flat.workspaceFolders[path].children, ['contextValue', 'sortKey'], ['desc', 'asc']);
+        for (const id in this.#flat.tabGroups) {
+            this.#flat.tabGroups[id].children = orderBy(this.#flat.tabGroups[id].children, ['contextValue', 'sortKey'], ['desc', 'asc']);
         }
-        for (const path in this.#flat.folders) {
-            this.#flat.folders[path].children = orderBy(this.#flat.folders[path].children, ['contextValue', 'sortKey'], ['desc', 'asc']);
+        for (const id in this.#flat.workspaceFolders) {
+            this.#flat.workspaceFolders[id].children = orderBy(this.#flat.workspaceFolders[id].children, ['contextValue', 'sortKey'], ['desc', 'asc']);
+        }
+        for (const id in this.#flat.folders) {
+            this.#flat.folders[id].children = orderBy(this.#flat.folders[id].children, ['contextValue', 'sortKey'], ['desc', 'asc']);
         }
         
         if (initial) {
@@ -122,7 +135,7 @@ module.exports = class TreeviewPanel {
             });
 
             this.#treeview.onDidChangeVisibility((event) => {
-                this.#log("this.#treeview.onDidChangeVisibility");
+                this.#log("> this.#treeview.onDidChangeVisibility");
                 // highlight currently active editor
                 if (event.visible) {
                     this.#revealCurrentTab();
@@ -139,24 +152,40 @@ module.exports = class TreeviewPanel {
     
         // we use parent to know to which item we have to add the next level
         let parent = this.tree;
+        let tabGroup = null;
+        let tabGroupIndex;
         let workspaceFolder = null;
         let folder = null;
-    
+        
+        // add tab group for workspace folder
+        if (vscode.window.tabGroups.all.length > 1) {
+            tabGroupIndex = item.group.viewColumn;
+            if (this.#flat.tabGroups[tabGroupIndex]) {
+                tabGroup = this.#flat.tabGroups[tabGroupIndex];
+            } else {
+                tabGroup = new TabgroupItem(tabGroupIndex, parent);
+                this.#flat.tabGroups[tabGroupIndex] = tabGroup;
+                parent.children.push(tabGroup);
+            }
+            parent = tabGroup;
+        }
+
         // check if the file is part of a workspace folder
         // could be undefined
         if (vscode.workspace.workspaceFolders && (vscode.workspace.workspaceFolders.length > 1 || !config.get('SkipWorkspacesIfNotNeeded'))) {
             // iterate through all workspaces to find the matching one
             vscode.workspace.workspaceFolders.every(_workspace => {
                 const workspacePath = helper.getPath(_workspace);
+                const workspaceFlatId = `${tabGroupIndex}-${workspacePath}`;
                 // we need to add the path sep to be sure it is the correct workspace
                 // otherwise a file "workspace2/foo.bar" would macht "workspace", because the "2" is ignored
                 if (itemPath.startsWith(workspacePath + $path.sep)) {
-                    if (this.#flat.workspaceFolders[workspacePath]) {
-                        workspaceFolder = this.#flat.workspaceFolders[workspacePath];
+                    if (this.#flat.workspaceFolders[workspaceFlatId]) {
+                        workspaceFolder = this.#flat.workspaceFolders[workspaceFlatId];
                     } else {
                         const packageData = helper.getPackageData(workspacePath);
-                        workspaceFolder = new WorkspaceFolderItem(_workspace.uri, parent, packageData);
-                        this.#flat.workspaceFolders[workspacePath] = workspaceFolder;
+                        workspaceFolder = new WorkspaceFolderItem(_workspace.uri, tabGroupIndex, parent, packageData);
+                        this.#flat.workspaceFolders[workspaceFlatId] = workspaceFolder;
                         parent.children.push(workspaceFolder);
                     }
                     parent = workspaceFolder;
@@ -176,13 +205,14 @@ module.exports = class TreeviewPanel {
             
             const packageData = helper.getPackageData(path);
             const patternMatch = packagePatterns.filter(pattern => { return minimatch(path, pattern); } ).length > 0;
+            const folderFlatId = `${tabGroupIndex}-${path}`;
     
             if (packageData || patternMatch) {
-                if (this.#flat.folders[path]) {
-                    folder = this.#flat.folders[path];
+                if (this.#flat.folders[folderFlatId]) {
+                    folder = this.#flat.folders[folderFlatId];
                 } else {
-                    folder = new FolderItem(path, parent, packageData);
-                    this.#flat.folders[path] = folder;
+                    folder = new FolderItem(path, tabGroupIndex, parent, packageData);
+                    this.#flat.folders[folderFlatId] = folder;
                     parent.children.push(folder);
                 }
                 parent = folder;
@@ -193,7 +223,7 @@ module.exports = class TreeviewPanel {
     
         // at least add the file item
         let file;
-        file = new FileItem(item, parent);
+        file = new FileItem(item, parent, tabGroupIndex);
         this.#flat.files[file.id] = file;
         file.workspaceFolder = workspaceFolder;
         file.folder = folder;
@@ -204,14 +234,15 @@ module.exports = class TreeviewPanel {
     }
     
     #revealCurrentTab() {
-        this.#log("> #revealCurrentTab");
         // does not exist if the currently active item on startup is eg. the "Settings" editor
         if (!vscode.window.tabGroups.activeTabGroup.activeTab.input) {
             this.#log("#revealCurrentTab: There is no activeTab");
             return;
         }
 
-        this.#treeview.reveal(this.#flat.files[helper.getId(vscode.window.tabGroups.activeTabGroup.activeTab.input)]);
+        this.#log("> #revealCurrentTab", helper.getId(vscode.window.tabGroups.activeTabGroup.activeTab));
+
+        this.#treeview.reveal(this.#flat.files[helper.getId(vscode.window.tabGroups.activeTabGroup.activeTab)]);
     }
 
     #log() {
