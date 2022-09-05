@@ -9,6 +9,7 @@ module.exports = class Folder {
         
         this.contextValue       = "folder";
         this.id                 = `${tabGroupIndex}-${path}`;
+        this.resourceUri        = vscode.Uri.parse("/" + path);
         this.path               = path;
         this.sortKey            = helper.normalizePath(path).toLowerCase();
         this.collapsibleState   = vscode.TreeItemCollapsibleState.Expanded;

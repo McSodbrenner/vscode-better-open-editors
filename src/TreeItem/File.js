@@ -9,6 +9,7 @@ module.exports = class File {
         this.collapsibleState   = vscode.TreeItemCollapsibleState.None;
         this.parent             = parent;
         this.isPinned           = item.isPinned;
+        this.tab                = item;
 
         // standard items
         if  (typeof item.input.uri !== "undefined") {
@@ -16,6 +17,7 @@ module.exports = class File {
             this.sortKey        = helper.getPath(item.input).toLowerCase();
             this.internalLabel  = helper.getPath(item.input);
             this.resourceUri    = item.input.uri;
+            this.path           = helper.getPath(item.input);
 
             this.command = {
                 // "untitled" files cannot be handled via vscode.open :(
@@ -30,10 +32,12 @@ module.exports = class File {
             this.sortKey        = helper.getPath(item.input).toLowerCase();
             this.internalLabel  = helper.getPath(item.input);
             this.resourceUri    = item.input.original;
+            this.path           = helper.getPath(item.input);
+
             this.command = {
                 command: "vscode.diff",
                 title: "Open",
-                arguments: [item.input.original, item.input.modified],
+                arguments: [item.input.original, item.input.modified, "Differences", tabGroupIndex],
             }
 
             // add description

@@ -134,13 +134,17 @@ module.exports = class TreeviewPanel {
                 treeDataProvider: this.#dataProvider
             });
 
-            this.#treeview.onDidChangeVisibility((event) => {
-                this.#log("> this.#treeview.onDidChangeVisibility");
-                // highlight currently active editor
-                if (event.visible) {
-                    this.#revealCurrentTab();
-                }
-            });
+            setTimeout(() => {
+
+                this.#revealCurrentTab();
+            }, 2000);
+            // this.#treeview.onDidChangeVisibility((event) => {
+            //     this.#log("> this.#treeview.onDidChangeVisibility");
+            //     // highlight currently active editor
+            //     if (event.visible) {
+            //         this.#revealCurrentTab();
+            //     }
+            // });
         } else {
             this.#dataProvider.refresh();
         }

@@ -8,6 +8,7 @@ module.exports = class Workspace {
 
         this.contextValue       = "workspace";
         this.id                 = `${tabGroupIndex}-${uri.path}`;
+        this.resourceUri        = uri;
         this.path               = helper.normalizePath(uri.path);
         this.sortKey            = helper.normalizePath(uri.path).toLowerCase();
         this.collapsibleState   = vscode.TreeItemCollapsibleState.Expanded;

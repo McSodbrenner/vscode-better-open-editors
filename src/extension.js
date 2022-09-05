@@ -1,31 +1,12 @@
+const $path			= require('path');
 const vscode		= require('vscode');
 const TreeviewPanel	= require('./TreeviewPanel');
 
-function activate(context) {
-	// code for a close button / doesn't work proerly
-    // "commands": [
-	// 	{
-	// 	  "command": "betterOpenEditors.closeEditor",
-	// 	  "title": "Close",
-	// 	  "icon": "$(close)"
-	// 	}
-	//   ],
-	//   "menus": {
-	// 	"view/item/context": [
-	// 	  {
-	// 		"command": "betterOpenEditors.closeEditor",
-	// 		"group": "inline",
-	// 		"when": "viewItem == file"
-	// 	  }
-	// 	]
-	//   }
-	// vscode.commands.registerCommand('betterOpenEditors.closeEditor', (item) => {
-	// 	vscode.window.showTextDocument(item.resourceUri)
-    // 		.then(() => {
-    //     		return vscode.commands.executeCommand('workbench.action.closeActiveEditor');
-    // 		});
-	// });
+// TODOCE Änderungen in changelog übernehmen
+// TODOCE Context menu "folder": Close all tabs within the folder
+// TODOCE Context menu "folder": Run script within folder
 
+function activate(context) {
 	const treeviewPanel = new TreeviewPanel(context);
 
 	vscode.commands.registerCommand('betterOpenEditors.openExtensionSettings', () => {
@@ -40,6 +21,25 @@ function activate(context) {
 
 	vscode.commands.registerCommand('betterOpenEditors.showTab', (input, tabGroupIndex) => {
 		vscode.window.showTextDocument(input, tabGroupIndex, true);
+	});
+
+	vscode.commands.registerCommand('betterOpenEditors.closeTab', (treeItem) => {
+		vscode.window.tabGroups.close(treeItem.tab);
+	});
+
+	vscode.commands.registerCommand('betterOpenEditors.openInIntegratedTerminal', (treeItem) => {
+		vscode.window.createTerminal({
+			name: $path.basename(treeItem.path), 
+			cwd: treeItem.path,
+		}).show();
+	});
+
+	vscode.commands.registerCommand('betterOpenEditors.copyPath', (treeItem) => {
+		vscode.env.clipboard.writeText(treeItem.path);
+	});
+
+	vscode.commands.registerCommand('betterOpenEditors.revealFileInOS', (treeItem) => {
+		vscode.commands.executeCommand('revealFileInOS', treeItem.resourceUri);
 	});
 }
 

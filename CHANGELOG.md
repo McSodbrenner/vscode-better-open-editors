@@ -2,6 +2,11 @@
 
 ## Release Notes
 
+### 1.4.0
+
+ * Feature: Added "Close" & "Open in Integrated Terminal" button
+ * Feature: Added some context menu items
+
 ### 1.3.0
 
  * Feature: Added the possibility to use Tab groups.
