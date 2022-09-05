@@ -1,5 +1,4 @@
 const vscode    = require('vscode');
-const path      = require('path');
 const helper    = require ('../helpers');
 
 module.exports = class Tabgroup {

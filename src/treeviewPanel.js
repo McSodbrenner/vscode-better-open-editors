@@ -162,7 +162,7 @@ module.exports = class TreeviewPanel {
         }
     }
     
-    #addTabGroup(item, payload, config) {
+    #addTabGroup(item, payload, _config) {
         let tabGroup = null;
         const tabGroupIndex = item.group.viewColumn;
         
@@ -223,10 +223,8 @@ module.exports = class TreeviewPanel {
         let path = $path.dirname(itemPath);
         const packagePatterns = config.get("PackagePatterns").split("\n");
 
-        while (true) {
-            // second parts mean: if we have only one path separator in the path (the case on Mac for "/" and on Windows for "\")
-            if (path === payload.parent.path || path.split($path.sep).length - 1 === 1) break;
-            
+        // second parts mean: if we have only one path separator in the path (the case on Mac for "/" and on Windows for "\")
+        while (path !== payload.parent.path && path.split($path.sep).length - 1 > 1) {
             const packageData = helper.getPackageData(path);
             const patternMatch = packagePatterns.filter(pattern => { return minimatch(path, pattern); } ).length > 0;
             const folderFlatId = `${tabGroupIndex}-${path}`;
@@ -248,9 +246,10 @@ module.exports = class TreeviewPanel {
         return payload;
     }
 
-    #addTab(item, payload, config) {
-        // at least add the file item
-        const file = new FileItem(item, payload.parent, payload.workspaceFolder);
+    #addTab(item, payload, _config) {
+        const tabGroupIndex = item.group.viewColumn;
+
+        const file = new FileItem(item, payload.parent, payload.workspaceFolder, tabGroupIndex);
         this.#flat.files[file.id] = file;
         payload.parent.children.push(file);
         

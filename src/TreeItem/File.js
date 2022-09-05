@@ -4,7 +4,7 @@ const $path     = require('path');
 const helper    = require ('../helpers');
 
 module.exports = class File {
-    constructor(item, parent, workspaceFolder) {
+    constructor(item, parent, workspaceFolder, tabGroupIndex) {
         this.contextValue       = 'file';
         this.collapsibleState   = vscode.TreeItemCollapsibleState.None;
         this.parent             = parent;
