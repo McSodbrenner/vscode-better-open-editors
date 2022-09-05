@@ -235,7 +235,7 @@ module.exports = class TreeviewPanel {
                 if (this.#flat.folders[folderFlatId]) {
                     folder = this.#flat.folders[folderFlatId];
                 } else {
-                    folder = new FolderItem(path, tabGroupIndex, payload.parent, packageData);
+                    folder = new FolderItem(path, tabGroupIndex, payload.parent, payload.workspaceFolder, packageData);
                     this.#flat.folders[folderFlatId] = folder;
                     payload.parent.children.push(folder);
                 }
@@ -250,11 +250,8 @@ module.exports = class TreeviewPanel {
 
     #addTab(item, payload, config) {
         // at least add the file item
-        const file = new FileItem(item, payload.parent);
+        const file = new FileItem(item, payload.parent, payload.workspaceFolder);
         this.#flat.files[file.id] = file;
-        file.workspaceFolder = payload.workspaceFolder;
-        file.folder = payload.parent;
-    
         payload.parent.children.push(file);
         
         return payload;

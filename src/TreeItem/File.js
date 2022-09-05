@@ -4,12 +4,13 @@ const $path     = require('path');
 const helper    = require ('../helpers');
 
 module.exports = class File {
-    constructor(item, parent) {
+    constructor(item, parent, workspaceFolder) {
         this.contextValue       = 'file';
         this.collapsibleState   = vscode.TreeItemCollapsibleState.None;
         this.parent             = parent;
         this.isPinned           = item.isPinned;
         this.tab                = item;
+        this.workspaceFolder    = workspaceFolder;
 
         // standard items
         if  (typeof item.input.uri !== "undefined") {

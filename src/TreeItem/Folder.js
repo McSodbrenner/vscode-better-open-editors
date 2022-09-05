@@ -4,7 +4,7 @@ const $path     = require('path');
 const helper    = require ('../helpers');
 
 module.exports = class Folder {
-    constructor(path, tabGroupIndex, parent = null, packageData = null) {
+    constructor(path, tabGroupIndex, parent = null, workspaceFolder = null, packageData = null) {
         const config = vscode.workspace.getConfiguration("betterOpenEditors");
         
         this.contextValue       = "folder";
@@ -13,6 +13,7 @@ module.exports = class Folder {
         this.path               = path;
         this.sortKey            = helper.normalizePath(path).toLowerCase();
         this.collapsibleState   = vscode.TreeItemCollapsibleState.Expanded;
+        this.workspaceFolder    = workspaceFolder;
         
         this.parent             = parent;
         this.children           = [];
