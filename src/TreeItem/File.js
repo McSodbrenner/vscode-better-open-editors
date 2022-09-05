@@ -4,7 +4,7 @@ const $path     = require('path');
 const helper    = require ('../helpers');
 
 module.exports = class File {
-    constructor(item, parent, tabGroupIndex) {
+    constructor(item, parent) {
         this.contextValue       = 'file';
         this.collapsibleState   = vscode.TreeItemCollapsibleState.None;
         this.parent             = parent;
@@ -23,7 +23,7 @@ module.exports = class File {
                 // "untitled" files cannot be handled via vscode.open :(
                 command: item.input.uri.scheme === "untitled" ? "betterOpenEditors.showTab" : "vscode.open",
                 title: "Open",
-                arguments: [item.input.uri, tabGroupIndex],
+                arguments: [item.input.uri, item.group.viewColumn],
             }
 
         // two editors items

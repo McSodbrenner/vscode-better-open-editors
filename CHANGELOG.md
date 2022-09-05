@@ -4,7 +4,7 @@
 
 ### 1.4.0
 
- * Feature: Added "Close" & "Open in Integrated Terminal" button
+ * Feature: Added "Close" & "Open in Integrated Terminal" buttons
  * Feature: Added some context menu items
 
 ### 1.3.0

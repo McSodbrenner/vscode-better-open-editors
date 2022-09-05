@@ -113,7 +113,18 @@ module.exports = class TreeviewPanel {
         // created nested Tree
         tabs.forEach(tab => {
             const config = vscode.workspace.getConfiguration("betterOpenEditors");
-            this.#addTabToTree(tab, config);
+
+            // an object of items that are changing between the next four steps
+            const payload = {
+                parent: this.tree,
+                workspaceFolder: null,
+            }
+            
+            this.#addTabGroup(tab, payload, config);
+            this.#addWorkspace(tab, payload, config);
+            this.#addFolder(tab, payload, config);
+            this.#addTab(tab, payload, config);
+
         });
     
         // iterate all flat.workspaces and flat.folders and sort content (first show folders and then files)
@@ -134,45 +145,45 @@ module.exports = class TreeviewPanel {
                 treeDataProvider: this.#dataProvider
             });
 
-            setTimeout(() => {
+            // um den Bug nachzustellen
+            // setTimeout(() => {
+            //     this.#revealCurrentTab();
+            // }, 2000);
 
-                this.#revealCurrentTab();
-            }, 2000);
-            // this.#treeview.onDidChangeVisibility((event) => {
-            //     this.#log("> this.#treeview.onDidChangeVisibility");
-            //     // highlight currently active editor
-            //     if (event.visible) {
-            //         this.#revealCurrentTab();
-            //     }
-            // });
+            this.#treeview.onDidChangeVisibility((event) => {
+                this.#log("> this.#treeview.onDidChangeVisibility");
+                // highlight currently active editor
+                if (event.visible) {
+                    this.#revealCurrentTab();
+                }
+            });
         } else {
             this.#dataProvider.refresh();
         }
     }
     
-    #addTabToTree(item, config) {
-        this.#log("> #addTabToTree");
-        const itemPath = helper.getPath(item.input);
-    
-        // we use parent to know to which item we have to add the next level
-        let parent = this.tree;
+    #addTabGroup(item, payload, config) {
         let tabGroup = null;
-        let tabGroupIndex;
-        let workspaceFolder = null;
-        let folder = null;
+        const tabGroupIndex = item.group.viewColumn;
         
-        // add tab group for workspace folder
         if (vscode.window.tabGroups.all.length > 1) {
-            tabGroupIndex = item.group.viewColumn;
             if (this.#flat.tabGroups[tabGroupIndex]) {
                 tabGroup = this.#flat.tabGroups[tabGroupIndex];
             } else {
-                tabGroup = new TabgroupItem(tabGroupIndex, parent);
+                tabGroup = new TabgroupItem(tabGroupIndex, payload.parent);
                 this.#flat.tabGroups[tabGroupIndex] = tabGroup;
-                parent.children.push(tabGroup);
+                payload.parent.children.push(tabGroup);
             }
-            parent = tabGroup;
+            payload.parent = tabGroup;
         }
+
+        return payload;
+    }
+
+    #addWorkspace(item, payload, config) {
+        const tabGroupIndex = item.group.viewColumn;
+        const itemPath = helper.getPath(item.input);
+        let workspaceFolder = null;
 
         // check if the file is part of a workspace folder
         // could be undefined
@@ -188,55 +199,67 @@ module.exports = class TreeviewPanel {
                         workspaceFolder = this.#flat.workspaceFolders[workspaceFlatId];
                     } else {
                         const packageData = helper.getPackageData(workspacePath);
-                        workspaceFolder = new WorkspaceFolderItem(_workspace.uri, tabGroupIndex, parent, packageData);
+                        workspaceFolder = new WorkspaceFolderItem(_workspace.uri, tabGroupIndex, payload.parent, packageData);
                         this.#flat.workspaceFolders[workspaceFlatId] = workspaceFolder;
-                        parent.children.push(workspaceFolder);
+                        payload.parent.children.push(workspaceFolder);
                     }
-                    parent = workspaceFolder;
+                    payload.parent = workspaceFolder;
+                    payload.workspaceFolder = workspaceFolder;
                     return false;
                 }
                 return true;
             });
         }
-    
+        
+        return payload;
+    }
+
+    #addFolder(item, payload, config) {
+        const tabGroupIndex = item.group.viewColumn;
+        const itemPath = helper.getPath(item.input);
+        let folder;
+
         // check if the file is in a folder (by package.json or pattern)
         let path = $path.dirname(itemPath);
         const packagePatterns = config.get("PackagePatterns").split("\n");
-    
+
         while (true) {
             // second parts mean: if we have only one path separator in the path (the case on Mac for "/" and on Windows for "\")
-            if (path === parent.path || path.split($path.sep).length - 1 === 1) break;
+            if (path === payload.parent.path || path.split($path.sep).length - 1 === 1) break;
             
             const packageData = helper.getPackageData(path);
             const patternMatch = packagePatterns.filter(pattern => { return minimatch(path, pattern); } ).length > 0;
             const folderFlatId = `${tabGroupIndex}-${path}`;
-    
+
             if (packageData || patternMatch) {
                 if (this.#flat.folders[folderFlatId]) {
                     folder = this.#flat.folders[folderFlatId];
                 } else {
-                    folder = new FolderItem(path, tabGroupIndex, parent, packageData);
+                    folder = new FolderItem(path, tabGroupIndex, payload.parent, packageData);
                     this.#flat.folders[folderFlatId] = folder;
-                    parent.children.push(folder);
+                    payload.parent.children.push(folder);
                 }
-                parent = folder;
+                payload.parent = folder;
                 break;
             }
             path = $path.join(path, "..");
         }
-    
-        // at least add the file item
-        let file;
-        file = new FileItem(item, parent, tabGroupIndex);
-        this.#flat.files[file.id] = file;
-        file.workspaceFolder = workspaceFolder;
-        file.folder = folder;
-    
-        parent.children.push(file);
-    
-        return file;
+
+        return payload;
     }
+
+    #addTab(item, payload, config) {
+        // at least add the file item
+        const file = new FileItem(item, payload.parent);
+        this.#flat.files[file.id] = file;
+        file.workspaceFolder = payload.workspaceFolder;
+        file.folder = payload.parent;
     
+        payload.parent.children.push(file);
+        
+        return payload;
+    }
+
     #revealCurrentTab() {
         // does not exist if the currently active item on startup is eg. the "Settings" editor
         if (!vscode.window.tabGroups.activeTabGroup.activeTab.input) {
