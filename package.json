@@ -85,12 +85,13 @@
     "commands": [
       { "command": "betterOpenEditors.refreshTree", "title": "Refresh tree", "icon": "$(refresh)" },
       { "command": "betterOpenEditors.openExtensionSettings", "title": "Open settings", "icon": "$(settings-gear)" },
-      { "command": "betterOpenEditors.showTab", "title": "Show Tab" },
+      { "command": "betterOpenEditors.showTab", "title": "Show tab" },
       { "command": "betterOpenEditors.closeTab", "title": "Close", "icon": "$(close)" },
-      { "command": "betterOpenEditors.openInIntegratedTerminal", "title": "Open in Integrated Terminal", "icon": "$(terminal)" },
-      { "command": "betterOpenEditors.copyPath", "title": "Copy Path" },
-      { "command": "betterOpenEditors.copyRelativePath", "title": "Copy Relative Path" },
-      { "command": "betterOpenEditors.revealFileInOS", "title": "Reveal in File Explorer" }
+      { "command": "betterOpenEditors.closeFolder", "title": "Close all tabs of package", "icon": "$(close)" },
+      { "command": "betterOpenEditors.openInIntegratedTerminal", "title": "Open in integrated terminal", "icon": "$(terminal)" },
+      { "command": "betterOpenEditors.copyPath", "title": "Copy path" },
+      { "command": "betterOpenEditors.copyRelativePath", "title": "Copy relative path" },
+      { "command": "betterOpenEditors.revealFileInOS", "title": "Reveal in file explorer" }
     ],
     "menus": {
       "view/title": [
@@ -104,6 +105,7 @@
         { "command": "betterOpenEditors.openInIntegratedTerminal", "group": "special", "when": "view == betterOpenEditors && viewItem == workspace" },
         { "command": "betterOpenEditors.openInIntegratedTerminal", "group": "special", "when": "view == betterOpenEditors && viewItem == folder" },
         { "command": "betterOpenEditors.closeTab", "when": "view == betterOpenEditors && viewItem == file" },
+        { "command": "betterOpenEditors.closeFolder", "when": "view == betterOpenEditors && viewItem == folder" },
         { "command": "betterOpenEditors.copyPath", "group": "copypath", "when": "view == betterOpenEditors && viewItem == file" },
         { "command": "betterOpenEditors.copyPath", "group": "copypath", "when": "view == betterOpenEditors && viewItem == folder" },
         { "command": "betterOpenEditors.copyPath", "group": "copypath", "when": "view == betterOpenEditors && viewItem == workspace" },

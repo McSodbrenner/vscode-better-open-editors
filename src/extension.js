@@ -27,6 +27,12 @@ function activate(context) {
 		vscode.window.tabGroups.close(treeItem.tab);
 	});
 
+	vscode.commands.registerCommand('betterOpenEditors.closeFolder', (treeItem) => {
+		treeItem.children.forEach(child => {
+			vscode.window.tabGroups.close(child.tab);
+		});
+	});
+
 	vscode.commands.registerCommand('betterOpenEditors.openInIntegratedTerminal', (treeItem) => {
 		vscode.window.createTerminal({
 			name: $path.basename(treeItem.path), 
