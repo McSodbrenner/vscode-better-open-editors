@@ -2,10 +2,6 @@ const $path			= require('path');
 const vscode		= require('vscode');
 const TreeviewPanel	= require('./TreeviewPanel');
 
-// TODOCE Änderungen in changelog übernehmen
-// TODOCE Context menu "folder": Close all tabs within the folder
-// TODOCE Context menu "folder": Run script within folder
-
 function activate(context) {
 	const treeviewPanel = new TreeviewPanel(context);
 

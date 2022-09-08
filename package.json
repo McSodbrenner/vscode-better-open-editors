@@ -29,57 +29,18 @@
     "configuration": {
       "title": "Better Open Editors",
       "properties": {
-        "betterOpenEditors.InsertSpaceForLastSlug": {
-          "order": 1,
-          "type": "boolean",
-          "default": false,
-          "description": "Insert space before the last slug to improve the readability."
-        },
-        "betterOpenEditors.InsertSpacesAroundSlashes": {
-          "order": 2,
-          "type": "boolean",
-          "default": false,
-          "description": "Insert spaces around all path slashes to improve the readability."
-        },
-        "betterOpenEditors.ShowWorkspaceIcon": {
-          "order": 3,
-          "type": "boolean",
-          "default": false,
-          "description": "Shows a Workspace Icon in front of workspace folders."
-        },
-        "betterOpenEditors.ShowPackageIcon": {
-          "order": 4,
-          "type": "boolean",
-          "default": false,
-          "description": "Shows a Package Icon in front of packages."
-        },
-        "betterOpenEditors.PackagePatterns": {
-          "order": 5,
-          "type": "string",
-          "editPresentation": "multilineText",
-          "default": "**/components/*\n**/modules/*",
-          "description": "One glob expression per line which creates a package folder if a parent path of a file matches it, e.g. '**/components/*'. Useful in workspace dependent settings."
-        },
-        "betterOpenEditors.ShowPackageInfo": {
-          "order": 6,
-          "type": "boolean",
-          "default": true,
-          "description": "Shows name and version if there is a package file."
-        },
-        "betterOpenEditors.SkipWorkspacesIfNotNeeded": {
-          "order": 7,
-          "type": "boolean",
-          "default": true,
-          "description": "Skips the workspace tree level if you have only one folder opened. But it could be useful to disable this setting if you want to see the package info for the workspace folder."
-        }
+        "betterOpenEditors.InsertSpaceForLastSlug": { "order": 1, "type": "boolean", "default": false, "description": "Insert space before the last slug to improve the readability." },
+        "betterOpenEditors.InsertSpacesAroundSlashes": { "order": 2, "type": "boolean", "default": false, "description": "Insert spaces around all path slashes to improve the readability." },
+        "betterOpenEditors.ShowWorkspaceIcon": { "order": 3, "type": "boolean", "default": false, "description": "Shows a Workspace Icon in front of workspace folders." },
+        "betterOpenEditors.ShowPackageIcon": { "order": 4, "type": "boolean", "default": false, "description": "Shows a Package Icon in front of packages." },
+        "betterOpenEditors.PackagePatterns": { "order": 5, "type": "string", "editPresentation": "multilineText", "default": "**/components/*\n**/modules/*", "description": "One glob expression per line which creates a package folder if a parent path of a file matches it, e.g. '**/components/*'. Useful in workspace dependent settings." },
+        "betterOpenEditors.ShowPackageInfo": { "order": 6, "type": "boolean", "default": true, "description": "Shows name and version if there is a package file." },
+        "betterOpenEditors.SkipWorkspacesIfNotNeeded": { "order": 7, "type": "boolean", "default": true, "description": "Skips the workspace tree level if you have only one folder opened. But it could be useful to disable this setting if you want to see the package info for the workspace folder." }
       }
     },
     "views": {
       "explorer": [
-        {
-          "id": "betterOpenEditors",
-          "name": "Better Open Editors"
-        }
+        { "id": "betterOpenEditors", "name": "Better Open Editors" }
       ]
     },
     "commands": [
@@ -123,7 +84,7 @@
     "test": "node ./test/runTest.js"
   },
   "devDependencies": {
-    "eslint": "^8.20.0"
+    "eslint": "^8.23.0"
   },
   "dependencies": {
     "lodash.orderby": "^4.6.0",

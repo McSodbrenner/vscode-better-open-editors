@@ -10,7 +10,7 @@ const FolderItem            = require('./TreeItem/Folder.js');
 const FileItem              = require('./TreeItem/File.js');
 const packageJson           = require('../package.json');
 
-module.exports = class TreeviewPanel {
+class TreeviewPanel {
     #debugMode;
     #treeview;
     #flat;
@@ -85,7 +85,7 @@ module.exports = class TreeviewPanel {
     }
 
     recreateTree(initial = false) {
-        this.#log("recreateTree", (new Date).toLocaleTimeString());
+        this.#log("> recreateTree", (new Date).toLocaleTimeString());
     
         this.#flat = {
             'tabGroups': {},
@@ -105,10 +105,12 @@ module.exports = class TreeviewPanel {
         this.tree = new FolderItem(rootPath);
         
         let tabs = vscode.window.tabGroups.all.map(group => group.tabs).flat();
-        // console.log(tabs);
         
         // filter virtual elements like "Keyboard Shortcuts"
         tabs = tabs.filter(tab => typeof tab.input !== "undefined");
+
+        // filter elements like "Markdown preview" as we don't know of which file this is the pvreview
+        tabs = tabs.filter(tab => typeof tab.input.viewType === "undefined");
 
         // created nested Tree
         tabs.forEach(tab => {
@@ -124,7 +126,6 @@ module.exports = class TreeviewPanel {
             this.#addWorkspace(tab, payload, config);
             this.#addFolder(tab, payload, config);
             this.#addTab(tab, payload, config);
-
         });
     
         // iterate all flat.workspaces and flat.folders and sort content (first show folders and then files)
@@ -165,7 +166,7 @@ module.exports = class TreeviewPanel {
     #addTabGroup(item, payload, _config) {
         let tabGroup = null;
         const tabGroupIndex = item.group.viewColumn;
-        
+                
         if (vscode.window.tabGroups.all.length > 1) {
             if (this.#flat.tabGroups[tabGroupIndex]) {
                 tabGroup = this.#flat.tabGroups[tabGroupIndex];
@@ -274,3 +275,5 @@ module.exports = class TreeviewPanel {
         }
     }
 }
+
+module.exports = TreeviewPanel;

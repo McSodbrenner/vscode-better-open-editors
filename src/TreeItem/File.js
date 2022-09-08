@@ -53,6 +53,20 @@ module.exports = class File {
             } catch(e) {
                 this.description = "Case not handled";
             }
+        } else if (typeof item.input.viewType !== "undefined") {
+            this.id             = helper.getId(item);
+            this.sortKey        = helper.getPath(item.input).toLowerCase();
+            this.internalLabel  = item.label;
+            this.resourceUri    = item.input.uri;
+            this.path           = helper.getPath(item.input);
+
+            // TODOCE: cannot switch to preview tab
+            // this.command = {
+            //     // "untitled" files cannot be handled via vscode.open :(
+            //     command: "betterOpenEditors.showTab",
+            //     title: "Open",
+            //     arguments: [item.input.uri, item.group.viewColumn],
+            // }
         }
 
         this.internalLabel      = this.internalLabel.replace(this.parent.path + $path.sep, "");

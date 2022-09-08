@@ -12,7 +12,7 @@ exports.normalizePath = (path) => {
 	// the uri.path in vscode is sometimes with forward slashes...
 	path = $path.normalize(path);
 	// remove the leading slash on windows ("\c:\\...\...") and make the drive letter always uppercase
-	path = path.replace(/^\\(.\:\\)/, (...hits) => {
+	path = path.replace(/^\\(.:\\)/, (...hits) => {
 		return hits[1].toUpperCase();
 	});
 	return path;
@@ -25,12 +25,14 @@ exports.normalizePath = (path) => {
  * @returns {string} a normalized path which is the main path for this input object
  */
  exports.getPath = (input) => {
-	if  (typeof input.uri !== "undefined") {
+	if (typeof input.uri !== "undefined") {
         return exports.normalizePath(input.uri.path);
     // diff items
     } else if (typeof input.original !== "undefined") {
         return exports.normalizePath(input.original.path);
-    }
+    } else {
+		return "";
+	}
 }
 
 /**
