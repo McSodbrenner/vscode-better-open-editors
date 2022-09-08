@@ -9,7 +9,7 @@
     "packages",
     "monorepo"
   ],
-  "version": "1.3.0",
+  "version": "1.4.0",
   "preview": false,
   "license": "MIT",
   "icon": "meta/icon.png",
@@ -29,52 +29,189 @@
     "configuration": {
       "title": "Better Open Editors",
       "properties": {
-        "betterOpenEditors.InsertSpaceForLastSlug": { "order": 1, "type": "boolean", "default": false, "description": "Insert space before the last slug to improve the readability." },
-        "betterOpenEditors.InsertSpacesAroundSlashes": { "order": 2, "type": "boolean", "default": false, "description": "Insert spaces around all path slashes to improve the readability." },
-        "betterOpenEditors.ShowWorkspaceIcon": { "order": 3, "type": "boolean", "default": false, "description": "Shows a Workspace Icon in front of workspace folders." },
-        "betterOpenEditors.ShowPackageIcon": { "order": 4, "type": "boolean", "default": false, "description": "Shows a Package Icon in front of packages." },
-        "betterOpenEditors.PackagePatterns": { "order": 5, "type": "string", "editPresentation": "multilineText", "default": "**/components/*\n**/modules/*", "description": "One glob expression per line which creates a package folder if a parent path of a file matches it, e.g. '**/components/*'. Useful in workspace dependent settings." },
-        "betterOpenEditors.ShowPackageInfo": { "order": 6, "type": "boolean", "default": true, "description": "Shows name and version if there is a package file." },
-        "betterOpenEditors.SkipWorkspacesIfNotNeeded": { "order": 7, "type": "boolean", "default": true, "description": "Skips the workspace tree level if you have only one folder opened. But it could be useful to disable this setting if you want to see the package info for the workspace folder." }
+        "betterOpenEditors.InsertSpaceForLastSlug": {
+          "order": 1,
+          "type": "boolean",
+          "default": false,
+          "description": "Insert space before the last slug to improve the readability."
+        },
+        "betterOpenEditors.InsertSpacesAroundSlashes": {
+          "order": 2,
+          "type": "boolean",
+          "default": false,
+          "description": "Insert spaces around all path slashes to improve the readability."
+        },
+        "betterOpenEditors.ShowWorkspaceIcon": {
+          "order": 3,
+          "type": "boolean",
+          "default": false,
+          "description": "Shows a Workspace Icon in front of workspace folders."
+        },
+        "betterOpenEditors.ShowPackageIcon": {
+          "order": 4,
+          "type": "boolean",
+          "default": false,
+          "description": "Shows a Package Icon in front of packages."
+        },
+        "betterOpenEditors.PackagePatterns": {
+          "order": 5,
+          "type": "string",
+          "editPresentation": "multilineText",
+          "default": "**/components/*\n**/modules/*",
+          "description": "One glob expression per line which creates a package folder if a parent path of a file matches it, e.g. '**/components/*'. Useful in workspace dependent settings."
+        },
+        "betterOpenEditors.ShowPackageInfo": {
+          "order": 6,
+          "type": "boolean",
+          "default": true,
+          "description": "Shows name and version if there is a package file."
+        },
+        "betterOpenEditors.SkipWorkspacesIfNotNeeded": {
+          "order": 7,
+          "type": "boolean",
+          "default": true,
+          "description": "Skips the workspace tree level if you have only one folder opened. But it could be useful to disable this setting if you want to see the package info for the workspace folder."
+        }
       }
     },
     "views": {
       "explorer": [
-        { "id": "betterOpenEditors", "name": "Better Open Editors" }
+        {
+          "id": "betterOpenEditors",
+          "name": "Better Open Editors"
+        }
       ]
     },
     "commands": [
-      { "command": "betterOpenEditors.refreshTree", "title": "Refresh tree", "icon": "$(refresh)" },
-      { "command": "betterOpenEditors.openExtensionSettings", "title": "Open settings", "icon": "$(settings-gear)" },
-      { "command": "betterOpenEditors.showTab", "title": "Show tab" },
-      { "command": "betterOpenEditors.closeTab", "title": "Close", "icon": "$(close)" },
-      { "command": "betterOpenEditors.closeFolder", "title": "Close all tabs of package", "icon": "$(close)" },
-      { "command": "betterOpenEditors.openInIntegratedTerminal", "title": "Open in integrated terminal", "icon": "$(terminal)" },
-      { "command": "betterOpenEditors.copyPath", "title": "Copy path" },
-      { "command": "betterOpenEditors.copyRelativePath", "title": "Copy relative path" },
-      { "command": "betterOpenEditors.revealFileInOS", "title": "Reveal in file explorer" }
+      {
+        "command": "betterOpenEditors.refreshTree",
+        "title": "Refresh tree",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "betterOpenEditors.openExtensionSettings",
+        "title": "Open settings",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "betterOpenEditors.showTab",
+        "title": "Show tab"
+      },
+      {
+        "command": "betterOpenEditors.closeTab",
+        "title": "Close",
+        "icon": "$(close)"
+      },
+      {
+        "command": "betterOpenEditors.closeFolder",
+        "title": "Close all tabs of package",
+        "icon": "$(close)"
+      },
+      {
+        "command": "betterOpenEditors.openInIntegratedTerminal",
+        "title": "Open in integrated terminal",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "betterOpenEditors.copyPath",
+        "title": "Copy path"
+      },
+      {
+        "command": "betterOpenEditors.copyRelativePath",
+        "title": "Copy relative path"
+      },
+      {
+        "command": "betterOpenEditors.revealFileInOS",
+        "title": "Reveal in file explorer"
+      }
     ],
     "menus": {
       "view/title": [
-        { "command": "betterOpenEditors.refreshTree", "when": "view == betterOpenEditors", "group": "navigation" },
-        { "command": "betterOpenEditors.openExtensionSettings", "when": "view == betterOpenEditors", "group": "navigation" }
+        {
+          "command": "betterOpenEditors.refreshTree",
+          "when": "view == betterOpenEditors",
+          "group": "navigation"
+        },
+        {
+          "command": "betterOpenEditors.openExtensionSettings",
+          "when": "view == betterOpenEditors",
+          "group": "navigation"
+        }
       ],
       "view/item/context": [
-        { "command": "betterOpenEditors.closeTab", "group": "inline", "when": "view == betterOpenEditors && viewItem == file" },
-        { "command": "betterOpenEditors.openInIntegratedTerminal", "group": "inline", "when": "view == betterOpenEditors && viewItem == workspace" },
-        { "command": "betterOpenEditors.openInIntegratedTerminal", "group": "inline", "when": "view == betterOpenEditors && viewItem == folder" },
-        { "command": "betterOpenEditors.openInIntegratedTerminal", "group": "special", "when": "view == betterOpenEditors && viewItem == workspace" },
-        { "command": "betterOpenEditors.openInIntegratedTerminal", "group": "special", "when": "view == betterOpenEditors && viewItem == folder" },
-        { "command": "betterOpenEditors.closeTab", "when": "view == betterOpenEditors && viewItem == file" },
-        { "command": "betterOpenEditors.closeFolder", "when": "view == betterOpenEditors && viewItem == folder" },
-        { "command": "betterOpenEditors.copyPath", "group": "copypath", "when": "view == betterOpenEditors && viewItem == file" },
-        { "command": "betterOpenEditors.copyPath", "group": "copypath", "when": "view == betterOpenEditors && viewItem == folder" },
-        { "command": "betterOpenEditors.copyPath", "group": "copypath", "when": "view == betterOpenEditors && viewItem == workspace" },
-        { "command": "betterOpenEditors.copyRelativePath", "group": "copypath", "when": "view == betterOpenEditors && viewItem == file" },
-        { "command": "betterOpenEditors.copyRelativePath", "group": "copypath", "when": "view == betterOpenEditors && viewItem == folder" },
-        { "command": "betterOpenEditors.revealFileInOS", "group": "special", "when": "view == betterOpenEditors && viewItem == file" },
-        { "command": "betterOpenEditors.revealFileInOS", "group": "special", "when": "view == betterOpenEditors && viewItem == folder" },
-        { "command": "betterOpenEditors.revealFileInOS", "group": "special", "when": "view == betterOpenEditors && viewItem == workspace" }
+        {
+          "command": "betterOpenEditors.closeTab",
+          "group": "inline",
+          "when": "view == betterOpenEditors && viewItem == file"
+        },
+        {
+          "command": "betterOpenEditors.openInIntegratedTerminal",
+          "group": "inline",
+          "when": "view == betterOpenEditors && viewItem == workspace"
+        },
+        {
+          "command": "betterOpenEditors.openInIntegratedTerminal",
+          "group": "inline",
+          "when": "view == betterOpenEditors && viewItem == folder"
+        },
+        {
+          "command": "betterOpenEditors.openInIntegratedTerminal",
+          "group": "special",
+          "when": "view == betterOpenEditors && viewItem == workspace"
+        },
+        {
+          "command": "betterOpenEditors.openInIntegratedTerminal",
+          "group": "special",
+          "when": "view == betterOpenEditors && viewItem == folder"
+        },
+        {
+          "command": "betterOpenEditors.closeTab",
+          "when": "view == betterOpenEditors && viewItem == file"
+        },
+        {
+          "command": "betterOpenEditors.closeFolder",
+          "when": "view == betterOpenEditors && viewItem == folder"
+        },
+        {
+          "command": "betterOpenEditors.copyPath",
+          "group": "copypath",
+          "when": "view == betterOpenEditors && viewItem == file"
+        },
+        {
+          "command": "betterOpenEditors.copyPath",
+          "group": "copypath",
+          "when": "view == betterOpenEditors && viewItem == folder"
+        },
+        {
+          "command": "betterOpenEditors.copyPath",
+          "group": "copypath",
+          "when": "view == betterOpenEditors && viewItem == workspace"
+        },
+        {
+          "command": "betterOpenEditors.copyRelativePath",
+          "group": "copypath",
+          "when": "view == betterOpenEditors && viewItem == file"
+        },
+        {
+          "command": "betterOpenEditors.copyRelativePath",
+          "group": "copypath",
+          "when": "view == betterOpenEditors && viewItem == folder"
+        },
+        {
+          "command": "betterOpenEditors.revealFileInOS",
+          "group": "special",
+          "when": "view == betterOpenEditors && viewItem == file"
+        },
+        {
+          "command": "betterOpenEditors.revealFileInOS",
+          "group": "special",
+          "when": "view == betterOpenEditors && viewItem == folder"
+        },
+        {
+          "command": "betterOpenEditors.revealFileInOS",
+          "group": "special",
+          "when": "view == betterOpenEditors && viewItem == workspace"
+        }
       ]
     }
   },
