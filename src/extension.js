@@ -31,7 +31,6 @@ function activate(context) {
 
 	vscode.commands.registerCommand('betterOpenEditors.openInIntegratedTerminal', (treeItem) => {
 		vscode.window.createTerminal({
-			name: $path.basename(treeItem.path), 
 			cwd: treeItem.path,
 		}).show();
 	});
