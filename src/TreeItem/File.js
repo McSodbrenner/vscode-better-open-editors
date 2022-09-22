@@ -46,7 +46,20 @@ module.exports = class File {
                 if (item.input.original.scheme === "file") {
                     this.internalLabel += ` ↔ ${$path.basename(item.input.modified.path)}`;
                 } else if (item.input.original.scheme === "gitlens") {
-                    this.description = `${JSON.parse(item.input.original.query).ref} 🠖 ${JSON.parse(item.input.modified.query).ref}`;
+                    let original = "";
+                    let modified = $path.basename(item.input.modified.path);
+                    
+                    try {
+                        original += `(${JSON.parse(item.input.original.query).ref})`;
+                    // eslint-disable-next-line no-empty
+                    } catch (e) {}
+
+                    try {
+                        modified += ` (${JSON.parse(item.input.modified.query).ref})`;
+                    // eslint-disable-next-line no-empty
+                    } catch (e) {}
+
+                    this.description = `${original} 🠖 ${modified}`;
                 } else if (item.input.original.scheme === "git") {
                     this.description = `Changes`;
                 }

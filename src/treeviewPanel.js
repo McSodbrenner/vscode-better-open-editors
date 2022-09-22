@@ -9,6 +9,7 @@ const WorkspaceFolderItem   = require('./TreeItem/Workspace.js');
 const FolderItem            = require('./TreeItem/Folder.js');
 const FileItem              = require('./TreeItem/File.js');
 const packageJson           = require('../package.json');
+const event                 = require('./event');
 
 class TreeviewPanel {
     #debugMode;
@@ -48,7 +49,7 @@ class TreeviewPanel {
         });
         
         vscode.window.tabGroups.onDidChangeTabs(tabs => {
-            this.#log("> vscode.window.tabGroups.onDidChangeTabs");
+            this.#log("> vscode.window.tabGroups.onDidChangeTabs", tabs);
             if (tabs.opened.length || tabs.closed.length) {
                 this.recreateTree();
             }
@@ -62,7 +63,6 @@ class TreeviewPanel {
                     const fileItem = this.#flat.files[helper.getId(tab)];
                     fileItem.updateIcon(tab);
                     this.#dataProvider.refresh();
-                    this.#revealCurrentTab();
                 })
             }
         });
@@ -70,10 +70,6 @@ class TreeviewPanel {
         vscode.window.tabGroups.onDidChangeTabGroups(tabgroups => {
             if (tabgroups.opened.length || tabgroups.closed.length) {
                 this.recreateTree();
-            }
-
-            if (tabgroups.changed.length) {
-                this.#revealCurrentTab();
             }
         });
         
@@ -146,17 +142,16 @@ class TreeviewPanel {
                 treeDataProvider: this.#dataProvider
             });
 
-            // um den Bug nachzustellen
-            // setTimeout(() => {
-            //     this.#revealCurrentTab();
-            // }, 2000);
-
-            this.#treeview.onDidChangeVisibility((event) => {
+            this.#treeview.onDidChangeVisibility((e) => {
                 this.#log("> this.#treeview.onDidChangeVisibility");
-                // highlight currently active editor
-                if (event.visible) {
-                    this.#revealCurrentTab();
+
+                if (e.visible) {
+                    this.recreateTree();
                 }
+            });
+
+            event.on("safeToReveal", (children) => {
+                this.#revealCurrentTab(children);
             });
         } else {
             this.#dataProvider.refresh();
@@ -257,21 +252,22 @@ class TreeviewPanel {
         return payload;
     }
 
-    #revealCurrentTab() {
-        // does not exist if the currently active item on startup is eg. the "Settings" editor
-        if (!vscode.window.tabGroups.activeTabGroup.activeTab.input) {
-            this.#log("#revealCurrentTab: There is no activeTab");
-            return;
-        }
-
-        this.#log("> #revealCurrentTab", helper.getId(vscode.window.tabGroups.activeTabGroup.activeTab));
-
-        this.#treeview.reveal(this.#flat.files[helper.getId(vscode.window.tabGroups.activeTabGroup.activeTab)]);
-    }
-
     #log() {
         if (this.#debugMode) {
             console.log.apply(this, arguments);
+        }
+    }
+
+    #revealCurrentTab(children) {
+        // https://github.com/microsoft/vscode-discussions/discussions/125
+        const tab = vscode.window.tabGroups.activeTabGroup.activeTab;
+        const id = helper.getId(tab);
+
+        // find the id in the children. If it is found it is safe to reveal it
+        const treeItem = children.find((treeItem) => treeItem.contextValue === "file" && treeItem.id === id );
+        if (treeItem) {
+            const ref = this.#flat.files[id];
+            this.#treeview.reveal(ref);
         }
     }
 }

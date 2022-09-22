@@ -1,4 +1,5 @@
 const vscode = require('vscode');
+const event = require('./event');
 
 module.exports = class DataProvider {
     #treeviewPanel;
@@ -15,10 +16,21 @@ module.exports = class DataProvider {
     }
 
     getChildren(element) {
+        let children;
+
         if (typeof element === 'undefined') {
-            return this.#treeviewPanel.tree.children;
+            children = this.#treeviewPanel.tree.children;
+        } else {
+            children = element.children;
         }
-        return element.children;
+
+        // https://github.com/microsoft/vscode-discussions/discussions/125
+        // AFTER getChildren was called it is safe to reveal
+        setTimeout(() => {
+            event.emit("safeToReveal", children);
+        });
+
+        return children;
     }
 
     getParent(element) {

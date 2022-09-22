@@ -2,6 +2,10 @@
 
 ## Release Notes
 
+### 1.4.1
+
+ * Fix: Integrate workaround for broken treeview.reveal of VS Code (fixes #12)
+
 ### 1.4.0
 
  * Feature: Added "Close" & "Open in Integrated Terminal" buttons
