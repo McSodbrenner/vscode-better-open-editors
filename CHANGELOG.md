@@ -5,6 +5,7 @@
 ### 1.4.1
 
  * Fix: Integrate workaround for broken treeview.reveal of VS Code (fixes #12)
+ * Fix: Remove the naming of the terminal to prevent doubled cwd display (fixes #10)
 
 ### 1.4.0
 
