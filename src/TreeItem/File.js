@@ -50,12 +50,12 @@ module.exports = class File {
                     let modified = $path.basename(item.input.modified.path);
                     
                     try {
-                        original += `(${JSON.parse(item.input.original.query).ref})`;
+                        original += `${JSON.parse(item.input.original.query).ref}`;
                     // eslint-disable-next-line no-empty
                     } catch (e) {}
 
                     try {
-                        modified += ` (${JSON.parse(item.input.modified.query).ref})`;
+                        modified += ` ${JSON.parse(item.input.modified.query).ref}`;
                     // eslint-disable-next-line no-empty
                     } catch (e) {}
 

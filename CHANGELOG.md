@@ -2,6 +2,11 @@
 
 ## Release Notes
 
+### 1.4.2
+
+ * Fix: Remove accidently added parentheses
+
+
 ### 1.4.1
 
  * Fix: Integrate workaround for broken treeview.reveal of VS Code (fixes #12)
