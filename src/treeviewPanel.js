@@ -115,7 +115,7 @@ class TreeviewPanel {
             // an object of items that are changing between the next four steps
             const payload = {
                 parent: this.tree,
-                workspaceFolder: null,
+                workspaceFolder: this.tree,
             }
             
             this.#addTabGroup(tab, payload, config);

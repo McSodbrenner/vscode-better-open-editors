@@ -5,7 +5,7 @@
 ### 1.4.2
 
  * Fix: Remove accidently added parentheses
-
+ * Fix: Fix functionality of "Copy relative path" (fixes #13)
 
 ### 1.4.1
 
