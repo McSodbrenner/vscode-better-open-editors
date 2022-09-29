@@ -123,7 +123,11 @@
       {
         "command": "betterOpenEditors.revealFileInOS",
         "title": "Reveal in file explorer"
-      }
+      },
+      {
+        "command": "betterOpenEditors.pinTab",
+        "title": "Pin tab"
+      }      
     ],
     "menus": {
       "view/title": [
@@ -211,6 +215,11 @@
           "command": "betterOpenEditors.revealFileInOS",
           "group": "special",
           "when": "view == betterOpenEditors && viewItem == workspace"
+        },
+        {
+          "command": "betterOpenEditors.pinTab",
+          "group": "special",
+          "when": "view == betterOpenEditors && viewItem == file"
         }
       ]
     }
