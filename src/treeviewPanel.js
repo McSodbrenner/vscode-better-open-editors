@@ -41,7 +41,10 @@ class TreeviewPanel {
             if (changed.contentChanges.length !== 0) return;
         
             // search for the item and update it
-            const fileItem = this.#flat.files[helper.getId(changed.document)];
+            const id = helper.getId(changed.document);
+            if (!id) return;
+
+            const fileItem = this.#flat.files[id];
             if (fileItem) {
                 fileItem.updateIcon(changed.document);
                 this.#dataProvider.refresh();

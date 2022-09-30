@@ -2,6 +2,10 @@
 
 ## Release Notes
 
+### 1.4.3
+
+ * Fix: Handle errors caused by undefined tab.input (e.g. "Settings" page)
+
 ### 1.4.2
 
  * Fix: Remove accidently added parentheses

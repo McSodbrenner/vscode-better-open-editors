@@ -42,12 +42,13 @@ exports.normalizePath = (path) => {
  * @returns {string} which is in unique identifier for this tab
  */
  exports.getId = (tab) => {
-	if  (typeof tab.input.uri !== "undefined") {
+	if  (tab.input && typeof tab.input.uri !== "undefined") {
         return tab.group.viewColumn + '-' + exports.normalizePath(tab.input.uri.path);
     // diff items
-    } else if (typeof tab.input.original !== "undefined") {
+    } else if (tab.input && typeof tab.input.original !== "undefined") {
         return tab.group.viewColumn + '-' + `${exports.normalizePath(tab.input.original.path)}|${exports.normalizePath(tab.input.modified.path)}`;
     }
+	return null;
 }
 
 /**
@@ -59,7 +60,10 @@ exports.normalizePath = (path) => {
 exports.getPackageData = (path) => {
 	let packageFile;
 	let data = null;
-	let returner = '';
+	const returner = {
+		name: "",
+		version: "",
+	};
 
 	// try multiple package files
 	if (!data) {
@@ -77,13 +81,17 @@ exports.getPackageData = (path) => {
 	}
 
 	if (data && typeof data.name !== "undefined" && typeof data.name === "string") {
-		returner = data.name;
+		returner.name = data.name;
 	}
 	if (data && typeof data.version !== "undefined" && typeof data.version === "string") {
-		returner += " " + data.version;
+		returner.version = data.version;
 	}
 
-	return returner !== '' ? returner : null;
+	if (returner.name === "") {
+		return null;
+	}
+
+	return returner;
 }
 
 exports.log = () => {
