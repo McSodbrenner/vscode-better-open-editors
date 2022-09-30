@@ -2,9 +2,10 @@
 
 ## Release Notes
 
-### 1.4.3
+### 1.5.0
 
  * Fix: Handle errors caused by undefined tab.input (e.g. "Settings" page)
+ * Feature: Allow to hide package path by config
 
 ### 1.4.2
 

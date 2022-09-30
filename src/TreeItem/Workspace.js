@@ -16,14 +16,18 @@ module.exports = class Workspace {
         this.parent             = parent;
         this.children           = [];
 
-        // add package description
-        if (packageData && config.get("ShowPackageInfo")) {
-            this.description    = packageData;
-        }
-
         this.label              = path.basename(this.path);
 
-        // config dependent members
+        if (packageData) {
+            if (config.get("ShowPackageInfo")) {
+                this.description = `${packageData.name} ${packageData.version}`;
+
+                if (config.get("HidePackagePath")) {
+                    this.label = "";
+                }
+            }
+        }
+
         if (config.get("ShowWorkspaceIcon")) {
             this.iconPath = new vscode.ThemeIcon("root-folder");
         } else {

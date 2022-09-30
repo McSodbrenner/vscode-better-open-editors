@@ -18,11 +18,6 @@ module.exports = class Folder {
         this.parent             = parent;
         this.children           = [];
 
-        // add package description
-        if (packageData && config.get("ShowPackageInfo")) {
-            this.description    = packageData;
-        }
-        
         // config dependent members
         if (config.get("ShowPackageIcon")) {
             this.iconPath = new vscode.ThemeIcon("package");   
@@ -49,6 +44,16 @@ module.exports = class Folder {
             if (parts.length > 1) {
                 const last = $path.sep + " " + parts.pop();
                 this.label = parts.join($path.sep) + last;
+            }
+        }
+
+        if (packageData) {
+            if (config.get("ShowPackageInfo")) {
+                this.description = `${packageData.name} ${packageData.version}`;
+
+                if (config.get("HidePackagePath")) {
+                    this.label = "";
+                }
             }
         }
     }
