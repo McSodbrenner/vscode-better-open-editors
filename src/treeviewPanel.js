@@ -268,6 +268,13 @@ class TreeviewPanel {
         if (treeItem) {
             const ref = this.#flat.files[id];
             this.#treeview.reveal(ref);
+
+            // set also the contextValue of the file to "file-current" and others to "file" only
+            for (const id in this.#flat.files) {
+                this.#flat.files[id].contextValue = "file";
+            }
+            ref.contextValue = `fileCurrent${ref.isPinned ? "Pinned" : ""}`;
+            this.#dataProvider.refresh();
         }
     }
 }

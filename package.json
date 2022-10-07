@@ -127,6 +127,10 @@
       {
         "command": "betterOpenEditors.pinTab",
         "title": "Pin tab"
+      },
+      {
+        "command": "betterOpenEditors.unpinTab",
+        "title": "Unpin tab"
       }      
     ],
     "menus": {
@@ -146,7 +150,7 @@
         {
           "command": "betterOpenEditors.closeTab",
           "group": "inline",
-          "when": "view == betterOpenEditors && viewItem == file"
+          "when": "view == betterOpenEditors && viewItem in betterOpenEditors.fileLikeItems"
         },
         {
           "command": "betterOpenEditors.openInIntegratedTerminal",
@@ -170,7 +174,7 @@
         },
         {
           "command": "betterOpenEditors.closeTab",
-          "when": "view == betterOpenEditors && viewItem == file"
+          "when": "view == betterOpenEditors && viewItem in betterOpenEditors.fileLikeItems"
         },
         {
           "command": "betterOpenEditors.closeFolder",
@@ -179,7 +183,7 @@
         {
           "command": "betterOpenEditors.copyPath",
           "group": "copypath",
-          "when": "view == betterOpenEditors && viewItem == file"
+          "when": "view == betterOpenEditors && viewItem in betterOpenEditors.fileLikeItems"
         },
         {
           "command": "betterOpenEditors.copyPath",
@@ -194,7 +198,7 @@
         {
           "command": "betterOpenEditors.copyRelativePath",
           "group": "copypath",
-          "when": "view == betterOpenEditors && viewItem == file"
+          "when": "view == betterOpenEditors && viewItem in betterOpenEditors.fileLikeItems"
         },
         {
           "command": "betterOpenEditors.copyRelativePath",
@@ -204,7 +208,7 @@
         {
           "command": "betterOpenEditors.revealFileInOS",
           "group": "special",
-          "when": "view == betterOpenEditors && viewItem == file"
+          "when": "view == betterOpenEditors && viewItem in betterOpenEditors.fileLikeItems"
         },
         {
           "command": "betterOpenEditors.revealFileInOS",
@@ -218,8 +222,13 @@
         },
         {
           "command": "betterOpenEditors.pinTab",
-          "group": "special",
-          "when": "view == betterOpenEditors && viewItem == file"
+          "group": "specialPin",
+          "when": "view == betterOpenEditors && viewItem == fileCurrent"
+        },
+        {
+          "command": "betterOpenEditors.unpinTab",
+          "group": "specialPin",
+          "when": "view == betterOpenEditors && viewItem == fileCurrentPinned"
         }
       ]
     }
