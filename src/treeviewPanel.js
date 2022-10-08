@@ -62,6 +62,7 @@ class TreeviewPanel {
                     // update the icon
                     const fileItem = this.#flat.files[helper.getId(tab)];
                     fileItem.updateIcon(tab);
+                    this.#updateContextValue(fileItem);
                     this.#dataProvider.refresh();
                 })
             }
@@ -258,8 +259,8 @@ class TreeviewPanel {
         }
     }
 
+    // https://github.com/microsoft/vscode-discussions/discussions/125
     #revealCurrentTab(children) {
-        // https://github.com/microsoft/vscode-discussions/discussions/125
         const tab = vscode.window.tabGroups.activeTabGroup.activeTab;
         const id = helper.getId(tab);
 
@@ -268,14 +269,17 @@ class TreeviewPanel {
         if (treeItem) {
             const ref = this.#flat.files[id];
             this.#treeview.reveal(ref);
-
-            // set also the contextValue of the file to "file-current" and others to "file" only
-            for (const id in this.#flat.files) {
-                this.#flat.files[id].contextValue = "file";
-            }
-            ref.contextValue = `fileCurrent${ref.isPinned ? "Pinned" : ""}`;
-            this.#dataProvider.refresh();
+            this.#updateContextValue(ref);
         }
+    }
+
+    // update the contextValue to view the "pin tab" context menu
+    // set the contextValue of the file to "file-current" and others to "file" only
+    #updateContextValue(fileItem) {
+        for (const id in this.#flat.files) {
+            this.#flat.files[id].contextValue = "file";
+        }
+        fileItem.contextValue = `fileCurrent${fileItem.isPinned ? "Pinned" : ""}`;
     }
 }
 
