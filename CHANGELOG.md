@@ -2,6 +2,10 @@
 
 ## Release Notes
 
+### 1.6.0
+
+ * Feature: Add "Pin/Unpin Tab" on context menu (fixes #9)
+
 ### 1.5.0
 
  * Fix: Handle errors caused by undefined tab.input (e.g. "Settings" page)
