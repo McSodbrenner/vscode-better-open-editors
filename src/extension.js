@@ -1,4 +1,3 @@
-const $path			= require('path');
 const vscode		= require('vscode');
 const TreeviewPanel	= require('./TreeviewPanel');
 
@@ -46,6 +45,21 @@ function activate(context) {
 	vscode.commands.registerCommand('betterOpenEditors.revealFileInOS', (treeItem) => {
 		vscode.commands.executeCommand('revealFileInOS', treeItem.resourceUri);
 	});
+
+	vscode.commands.registerCommand('betterOpenEditors.pinTab', () => {
+		vscode.commands.executeCommand('workbench.action.pinEditor');
+	});
+
+	vscode.commands.registerCommand('betterOpenEditors.unpinTab', () => {
+		vscode.commands.executeCommand('workbench.action.unpinEditor');
+	});
+
+	// register file like types for context menus
+	vscode.commands.executeCommand('setContext', 'betterOpenEditors.fileLikeItems', [
+		'file',
+		'fileCurrent',
+		'fileCurrentPinned',
+	]);
 }
 
 // this method is called when your extension is deactivated
