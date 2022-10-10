@@ -1,5 +1,5 @@
 const vscode		= require('vscode');
-const TreeviewPanel	= require('./TreeviewPanel');
+const TreeviewPanel	= require('./treeviewPanel');
 
 function activate(context) {
 	const treeviewPanel = new TreeviewPanel(context);
