@@ -2,6 +2,11 @@
 
 ## Release Notes
 
+### 1.6.1
+
+ * Fix: Current file was no longer marked correctly
+ * Fix: Fix case sensitive filename issue for linux users
+
 ### 1.6.0
 
  * Feature: Add "Pin/Unpin Tab" on context menu (fixes #9)

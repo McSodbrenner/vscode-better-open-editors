@@ -13,16 +13,18 @@ const event                 = require('./event');
 
 class TreeviewPanel {
     #debugMode;
+    #fileLikeItems;
     #treeview;
     #flat;
     #dataProvider;
     tree;
 
-    constructor(context) {
+    constructor(context, fileLikeItems) {
         this.#debugMode = context.extensionMode === vscode.ExtensionMode.Development;
         this.#dataProvider = new DataProvider(this);
         this.#registerEvents();
         this.recreateTree(true);
+        this.#fileLikeItems = fileLikeItems;
     }
 
     #registerEvents() {
@@ -268,7 +270,7 @@ class TreeviewPanel {
         const id = helper.getId(tab);
 
         // find the id in the children. If it is found it is safe to reveal it
-        const treeItem = children.find((treeItem) => treeItem.contextValue === "file" && treeItem.id === id );
+        const treeItem = children.find((treeItem) => this.#fileLikeItems.includes(treeItem.contextValue) && treeItem.id === id );
         if (treeItem) {
             const ref = this.#flat.files[id];
             this.#treeview.reveal(ref);
