@@ -245,7 +245,8 @@
     "test": "node ./test/runTest.js"
   },
   "devDependencies": {
-    "eslint": "^8.23.0"
+    "eslint": "^8.23.0",
+    "eslint-plugin-import": "^2.26.0"
   },
   "dependencies": {
     "lodash.orderby": "^4.6.0",

@@ -1,15 +1,19 @@
 module.exports = {
-    "env": {
-        "node": true,
-        "es2021": true
+    env: {
+        node: true,
+        es2021: true
     },
-    "extends": "eslint:recommended",
-    "overrides": [
+    extends: "eslint:recommended",
+    overrides: [
     ],
-    "parserOptions": {
-        "ecmaVersion": "latest"
+    parserOptions: {
+        ecmaVersion: "latest"
     },
-    "rules": {
-        "no-unused-vars": [2, {"args": "all", "argsIgnorePattern": "^_"}]
+    plugins: [
+        "import",
+    ],
+    rules: {
+        "no-unused-vars": [2, {"args": "all", "argsIgnorePattern": "^_"}],
+        "import/no-unresolved": [2, { commonjs: true, caseSensitiveStrict: true, ignore: ["vscode"] }]
     }
 }
