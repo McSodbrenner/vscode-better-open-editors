@@ -4,91 +4,86 @@ const $path     = require('path');
 const helper    = require ('../helpers');
 
 module.exports = class File {
-    constructor(item, parent, workspaceFolder, tabGroupIndex) {
+    constructor(tab, parent, workspaceFolder, tabGroupIndex) {
         this.contextValue       = 'file';
         this.collapsibleState   = vscode.TreeItemCollapsibleState.None;
         this.parent             = parent;
-        this.isPinned           = item.isPinned;
-        this.tab                = item;
+        this.isPinned           = tab.isPinned;
+        this.tab                = tab;
         this.workspaceFolder    = workspaceFolder;
 
+        this.id             = helper.getId(tab);
+        this.path           = helper.getPath(tab.input);
+        this.sortKey        = this.path.toLowerCase();
+
         // standard items
-        if  (typeof item.input.uri !== "undefined") {
-            this.id             = helper.getId(item);
-            this.sortKey        = helper.getPath(item.input).toLowerCase();
-            this.internalLabel  = helper.getPath(item.input);
-            this.resourceUri    = item.input.uri;
-            this.path           = helper.getPath(item.input);
+        if  (typeof tab.input.uri !== "undefined") {
+            this.internalLabel  = this.path;
+            this.resourceUri    = tab.input.uri;
 
             this.command = {
                 // "untitled" files cannot be handled via vscode.open :(
-                command: item.input.uri.scheme === "untitled" ? "betterOpenEditors.showTab" : "vscode.open",
+                command: tab.input.uri.scheme === "untitled" ? "betterOpenEditors.showTab" : "vscode.open",
                 title: "Open",
-                arguments: [item.input.uri, item.group.viewColumn],
+                arguments: [tab.input.uri, tab.group.viewColumn],
             }
 
         // two editors items
-        } else if (typeof item.input.original !== "undefined") {
-            this.id             = helper.getId(item);
-            this.sortKey        = helper.getPath(item.input).toLowerCase();
-            this.internalLabel  = helper.getPath(item.input);
-            this.resourceUri    = item.input.original;
-            this.path           = helper.getPath(item.input);
+        } else if (typeof tab.input.original !== "undefined") {
+            this.internalLabel  = this.path;
+            this.resourceUri    = tab.input.original;
 
             this.command = {
                 command: "vscode.diff",
                 title: "Open",
-                arguments: [item.input.original, item.input.modified, "Differences", tabGroupIndex],
+                arguments: [tab.input.original, tab.input.modified, "Differences", tabGroupIndex],
             }
 
             // add description
             try {
-                if (item.input.original.scheme === "file") {
-                    this.internalLabel += ` ↔ ${$path.basename(item.input.modified.path)}`;
-                } else if (item.input.original.scheme === "gitlens") {
+                if (tab.input.original.scheme === "file") {
+                    this.internalLabel += ` ↔ ${$path.basename(tab.input.modified.path)}`;
+                } else if (tab.input.original.scheme === "gitlens") {
                     let original = "";
-                    let modified = $path.basename(item.input.modified.path);
+                    let modified = $path.basename(tab.input.modified.path);
                     
                     try {
-                        original += `${JSON.parse(item.input.original.query).ref}`;
+                        original += `${JSON.parse(tab.input.original.query).ref}`;
                     // eslint-disable-next-line no-empty
                     } catch (e) {}
 
                     try {
-                        modified += ` ${JSON.parse(item.input.modified.query).ref}`;
+                        modified += ` ${JSON.parse(tab.input.modified.query).ref}`;
                     // eslint-disable-next-line no-empty
                     } catch (e) {}
 
                     this.description = `${original} 🠖 ${modified}`;
-                } else if (item.input.original.scheme === "git") {
+                } else if (tab.input.original.scheme === "git") {
                     this.description = `Changes`;
                 }
             } catch(e) {
                 this.description = "Case not handled";
             }
-        } else if (typeof item.input.viewType !== "undefined") {
-            this.id             = helper.getId(item);
-            this.sortKey        = helper.getPath(item.input).toLowerCase();
-            this.internalLabel  = item.label;
-            this.resourceUri    = item.input.uri;
-            this.path           = helper.getPath(item.input);
+        } else if (typeof tab.input.viewType !== "undefined") {
+            this.internalLabel  = tab.label;
+            this.resourceUri    = tab.input.uri;
 
             // TODOCE: cannot switch to preview tab
             // this.command = {
             //     // "untitled" files cannot be handled via vscode.open :(
             //     command: "betterOpenEditors.showTab",
             //     title: "Open",
-            //     arguments: [item.input.uri, item.group.viewColumn],
+            //     arguments: [tab.input.uri, tab.group.viewColumn],
             // }
         }
 
         this.internalLabel      = this.internalLabel.replace(this.parent.path + $path.sep, "");
         this.internalLabel      = this.internalLabel.replace($os.homedir(), "~");
 
-        this.updateIcon(item);
+        this.update(tab);
     }
 
-    updateIcon(tab) {
+    update(tab) {
         // config dependent members
         const config = vscode.workspace.getConfiguration("betterOpenEditors");
 

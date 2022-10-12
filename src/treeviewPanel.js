@@ -3,11 +3,11 @@ const $path                 = require('path');
 const orderBy               = require('lodash.orderby');
 const minimatch             = require('minimatch');
 const helper                = require ('./helpers');
-const DataProvider          = require('./DataProvider.js');
-const TabgroupItem          = require('./TreeItem/Tabgroup.js');
-const WorkspaceFolderItem   = require('./TreeItem/Workspace.js');
-const FolderItem            = require('./TreeItem/Folder.js');
-const FileItem              = require('./TreeItem/File.js');
+const DataProvider          = require('./DataProvider');
+const TabgroupItem          = require('./TreeItem/Tabgroup');
+const WorkspaceFolderItem   = require('./TreeItem/Workspace');
+const FolderItem            = require('./TreeItem/Folder');
+const FileItem              = require('./TreeItem/File');
 const packageJson           = require('../package.json');
 const event                 = require('./event');
 
@@ -48,7 +48,7 @@ class TreeviewPanel {
 
             const fileItem = this.#flat.files[id];
             if (fileItem) {
-                fileItem.updateIcon(changed.document);
+                fileItem.update(changed.document);
                 this.#dataProvider.refresh();
             }
         });
@@ -66,7 +66,7 @@ class TreeviewPanel {
         
                     // update the icon
                     const fileItem = this.#flat.files[helper.getId(tab)];
-                    fileItem.updateIcon(tab);
+                    fileItem.update(tab);
                     this.#updateContextValue(fileItem);
                     this.#dataProvider.refresh();
                 })

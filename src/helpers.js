@@ -1,6 +1,5 @@
 const $fs   = require('fs');
 const $path = require('path');
-const $util = require('util');
 
 /**
  * Normalizes the path in a way we can handle windows and mac pathes nearly the same way
@@ -92,10 +91,6 @@ exports.getPackageData = (path) => {
 	}
 
 	return returner;
-}
-
-exports.log = () => {
-	console.log.apply(console, Array.from(arguments).map(item => $util.inspect(item)));
 }
 
 exports.makeItalic = (text) => {
