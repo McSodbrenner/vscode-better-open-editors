@@ -45,7 +45,7 @@ function activate(context) {
 	});
 
 	vscode.commands.registerCommand('betterOpenEditors.copyRelativePath', (treeItem) => {
-		vscode.env.clipboard.writeText(treeItem.path.replace(treeItem.workspaceFolder.path, ""));
+		vscode.env.clipboard.writeText(treeItem.path.replace(treeItem.workspaceFolder.path, ''));
 	});
 
 	vscode.commands.registerCommand('betterOpenEditors.revealFileInOS', (treeItem) => {

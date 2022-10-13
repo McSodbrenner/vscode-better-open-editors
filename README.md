@@ -11,7 +11,7 @@ Therefore, this extension helps to group open files in package folders (defined 
   * Automatically detects packages (package.json, composer.json).
   * Specification of RegExp patterns to build custom "virtual" package folders.
   * Supports multiple workspace folders.
-  * Support tab groups.
+  * Supports tab groups.
   * Platform independent.
 
 ## Package folder generation
