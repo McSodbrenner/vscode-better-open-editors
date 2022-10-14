@@ -165,10 +165,10 @@ class TreeviewPanel {
 		}
 	}
 	
-	#addTabGroup(item, payload, _config) {
+	#addTabGroup(tab, payload, _config) {
 		if (vscode.window.tabGroups.all.length > 1) {
 			let tabGroup = null;
-			const tabGroupIndex = item.group.viewColumn;
+			const tabGroupIndex = tab.group.viewColumn;
 
 			if (this.#flat.tabGroups[tabGroupIndex]) {
 				tabGroup = this.#flat.tabGroups[tabGroupIndex];
@@ -183,12 +183,12 @@ class TreeviewPanel {
 		return payload;
 	}
 
-	#addWorkspace(item, payload, config) {
+	#addWorkspace(tab, payload, config) {
 		// check if the file is part of a workspace folder
 		// could be undefined
 		if (vscode.workspace.workspaceFolders && (vscode.workspace.workspaceFolders.length > 1 || !config.get('SkipWorkspacesIfNotNeeded'))) {
-			const tabGroupIndex = item.group.viewColumn;
-			const itemPath = helper.getPath(item.input);
+			const tabGroupIndex = tab.group.viewColumn;
+			const itemPath = helper.getPath(tab.input);
 			let workspaceFolder = null;
 	
 			// iterate through all workspaces to find the matching one
@@ -217,9 +217,9 @@ class TreeviewPanel {
 		return payload;
 	}
 
-	#addFolder(item, payload, config) {
-		const tabGroupIndex = item.group.viewColumn;
-		const itemPath = helper.getPath(item.input);
+	#addFolder(tab, payload, config) {
+		const tabGroupIndex = tab.group.viewColumn;
+		const itemPath = helper.getPath(tab.input);
 		let folder;
 
 		// check if the file is in a folder (by package.json or pattern)
@@ -249,19 +249,12 @@ class TreeviewPanel {
 		return payload;
 	}
 
-	#addTab(item, payload, _config) {
-
-		const file = new FileItem(item, payload.parent, payload.workspaceFolder);
+	#addTab(tab, payload, _config) {
+		const file = new FileItem(tab, payload.parent, payload.workspaceFolder);
 		this.#flat.files[file.id] = file;
 		payload.parent.children.push(file);
 		
 		return payload;
-	}
-
-	#log() {
-		if (this.#debugMode) {
-			console.log.apply(this, arguments);
-		}
 	}
 
 	// https://github.com/microsoft/vscode-discussions/discussions/125
@@ -285,6 +278,11 @@ class TreeviewPanel {
 			this.#flat.files[id].contextValue = 'file';
 		}
 		fileItem.contextValue = `fileCurrent${fileItem.isPinned ? 'Pinned' : ''}`;
+	}
+
+	#log() {
+		if (!this.#debugMode) return;
+		console.log.apply(this, arguments);
 	}
 }
 
