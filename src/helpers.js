@@ -70,6 +70,7 @@ exports.getPackageData = (path) => {
 	let packageFile;
 	let data = null;
 	const returner = {
+		packageFile: '',
 		name: '',
 		version: '',
 	};
@@ -111,6 +112,8 @@ exports.getPackageData = (path) => {
 	if (returner.name === '') {
 		return null;
 	}
+
+	returner.packageFile = packageFile;
 
 	return returner;
 };

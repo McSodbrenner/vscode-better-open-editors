@@ -1,9 +1,12 @@
 const vscode    = require('vscode');
 const helper    = require ('../helpers');
+const Base		= require ('./Base');
 
-module.exports = class Tabgroup {
+module.exports = class Tabgroup extends Base {
 	constructor(index, parent) {
-		this.contextValue       = 'tabgroup';
+		super();
+		
+		this.addContextValue('tabgroup');
 		this.id                 = `group-${index}`;
 		this.sortKey            = this.id;
 		this.collapsibleState   = vscode.TreeItemCollapsibleState.Expanded;

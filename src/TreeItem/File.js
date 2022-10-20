@@ -2,10 +2,13 @@ const vscode    = require('vscode');
 const $os       = require('os');
 const $path     = require('path');
 const helper    = require ('../helpers');
+const Base		= require ('./Base');
 
-module.exports = class File {
+module.exports = class File extends Base {
 	constructor(tab, parent, workspaceFolder) {
-		this.contextValue       = 'file';
+		super();
+		
+		this.addContextValue('file');
 		this.collapsibleState   = vscode.TreeItemCollapsibleState.None;
 		this.parent             = parent;
 		this.isPinned           = tab.isPinned;

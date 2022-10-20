@@ -1,14 +1,8 @@
 const vscode		= require('vscode');
 const TreeviewPanel	= require('./treeviewPanel');
 
-const fileLikeItems = [
-	'file',
-	'fileCurrent',
-	'fileCurrentPinned',
-];
-
 function activate(context) {
-	const treeviewPanel = new TreeviewPanel(context, fileLikeItems);
+	const treeviewPanel = new TreeviewPanel(context);
 
 	vscode.commands.registerCommand('betterOpenEditors.openExtensionSettings', () => {
 		// the correct way but does not keep the correct order
@@ -60,8 +54,9 @@ function activate(context) {
 		vscode.commands.executeCommand('workbench.action.unpinEditor');
 	});
 
-	// register file like types for context menus
-	vscode.commands.executeCommand('setContext', 'betterOpenEditors.fileLikeItems', fileLikeItems);
+	vscode.commands.registerCommand('betterOpenEditors.openPackageFile', (treeItem) => {
+		vscode.commands.executeCommand('vscode.open', vscode.Uri.file(treeItem.packageData.packageFile));
+	});
 }
 
 // this method is called when your extension is deactivated

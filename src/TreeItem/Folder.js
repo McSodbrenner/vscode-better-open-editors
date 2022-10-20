@@ -2,17 +2,21 @@ const vscode    = require('vscode');
 const $os       = require('os');
 const $path     = require('path');
 const helper    = require ('../helpers');
+const Base		= require ('./Base');
 
-module.exports = class Folder {
+module.exports = class Folder extends Base {
 	constructor(path, tabGroupIndex, parent = null, workspaceFolder = null, packageData = null) {
+		super();
+
 		const config = vscode.workspace.getConfiguration('betterOpenEditors');
 		
-		this.contextValue       = 'folder';
+		this.addContextValue('folder');
 		this.id                 = `${tabGroupIndex}-${path}`;
 		this.resourceUri        = vscode.Uri.parse('/' + path);
 		this.path               = path;
 		this.sortKey            = helper.normalizePath(path).toLowerCase();
 		this.collapsibleState   = vscode.TreeItemCollapsibleState.Expanded;
+		this.packageData		= packageData;
 		this.workspaceFolder    = workspaceFolder;
 		
 		this.parent             = parent;
@@ -48,6 +52,8 @@ module.exports = class Folder {
 		}
 
 		if (packageData) {
+			this.addContextValue('realpackage');
+
 			if (config.get('ShowPackageInfo')) {
 				this.description = `${packageData.name} ${packageData.version}`;
 

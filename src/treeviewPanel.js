@@ -13,15 +13,13 @@ const event                 = require('./event');
 
 class TreeviewPanel {
 	#debugMode;
-	#fileLikeItems;
 	#treeview;
 	#flat;
 	#dataProvider;
 	tree;
 
-	constructor(context, fileLikeItems) {
+	constructor(context) {
 		this.#debugMode = context.extensionMode === vscode.ExtensionMode.Development;
-		this.#fileLikeItems = fileLikeItems;
 		this.#dataProvider = new DataProvider(this);
 		this.#registerEvents();
 		this.recreateTree(true);
@@ -263,7 +261,7 @@ class TreeviewPanel {
 		const id = helper.getId(tab);
 
 		// find the id in the children. If it is found it is safe to reveal it
-		const treeItem = children.find((treeItem) => this.#fileLikeItems.includes(treeItem.contextValue) && treeItem.id === id );
+		const treeItem = children.find((treeItem) => treeItem.hasContextValue('file') && treeItem.id === id );
 		if (treeItem) {
 			const ref = this.#flat.files[id];
 			this.#treeview.reveal(ref);
@@ -272,12 +270,17 @@ class TreeviewPanel {
 	}
 
 	// update the contextValue to view the "pin tab" context menu
-	// set the contextValue of the file to "file-current" and others to "file" only
+	// set the contextValue of the file to "[file][current]" and others to "[file]" only
 	#updateContextValue(fileItem) {
 		for (const id in this.#flat.files) {
-			this.#flat.files[id].contextValue = 'file';
+			this.#flat.files[id].setContextValue('file');
 		}
-		fileItem.contextValue = `fileCurrent${fileItem.isPinned ? 'Pinned' : ''}`;
+
+		fileItem.addContextValue('current');
+
+		if (fileItem.isPinned) {
+			fileItem.addContextValue('pinned');
+		}
 	}
 
 	#log() {

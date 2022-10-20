@@ -137,6 +137,10 @@
       {
         "command": "betterOpenEditors.unpinTab",
         "title": "Unpin tab"
+      },
+      {
+        "command": "betterOpenEditors.openPackageFile",
+        "title": "Open package file"
       }
     ],
     "menus": {
@@ -156,85 +160,102 @@
         {
           "command": "betterOpenEditors.closeTab",
           "group": "inline",
-          "when": "view == betterOpenEditors && viewItem in betterOpenEditors.fileLikeItems"
+          "when": "view == betterOpenEditors && viewItem =~ /<file>/"
         },
         {
           "command": "betterOpenEditors.openInIntegratedTerminal",
           "group": "inline",
-          "when": "view == betterOpenEditors && viewItem == workspace"
+          "when": "view == betterOpenEditors && viewItem =~ /<workspace>/"
         },
         {
           "command": "betterOpenEditors.openInIntegratedTerminal",
           "group": "inline",
-          "when": "view == betterOpenEditors && viewItem == folder"
-        },
-        {
-          "command": "betterOpenEditors.openInIntegratedTerminal",
-          "group": "special",
-          "when": "view == betterOpenEditors && viewItem == workspace"
-        },
-        {
-          "command": "betterOpenEditors.openInIntegratedTerminal",
-          "group": "special",
-          "when": "view == betterOpenEditors && viewItem == folder"
-        },
-        {
-          "command": "betterOpenEditors.closeTab",
-          "when": "view == betterOpenEditors && viewItem in betterOpenEditors.fileLikeItems"
+          "when": "view == betterOpenEditors && viewItem =~ /<folder>/"
         },
         {
           "command": "betterOpenEditors.closeFolder",
-          "when": "view == betterOpenEditors && viewItem == folder"
+          "group": "inline",
+          "when": "view == betterOpenEditors && viewItem =~ /<folder>/"
         },
         {
           "command": "betterOpenEditors.copyPath",
-          "group": "copypath",
-          "when": "view == betterOpenEditors && viewItem in betterOpenEditors.fileLikeItems"
+          "group": "1-copypath",
+          "when": "view == betterOpenEditors && viewItem =~ /<file>/"
         },
         {
           "command": "betterOpenEditors.copyPath",
-          "group": "copypath",
-          "when": "view == betterOpenEditors && viewItem == folder"
+          "group": "1-copypath",
+          "when": "view == betterOpenEditors && viewItem =~ /<folder>/"
         },
         {
           "command": "betterOpenEditors.copyPath",
-          "group": "copypath",
-          "when": "view == betterOpenEditors && viewItem == workspace"
+          "group": "1-copypath",
+          "when": "view == betterOpenEditors && viewItem =~ /<workspace>/"
         },
         {
           "command": "betterOpenEditors.copyRelativePath",
-          "group": "copypath",
-          "when": "view == betterOpenEditors && viewItem in betterOpenEditors.fileLikeItems"
+          "group": "1-copypath",
+          "when": "view == betterOpenEditors && viewItem =~ /<file>/"
         },
         {
           "command": "betterOpenEditors.copyRelativePath",
-          "group": "copypath",
-          "when": "view == betterOpenEditors && viewItem == folder"
+          "group": "1-copypath",
+          "when": "view == betterOpenEditors && viewItem =~ /<folder>/"
         },
         {
           "command": "betterOpenEditors.revealFileInOS",
-          "group": "special",
-          "when": "view == betterOpenEditors && viewItem in betterOpenEditors.fileLikeItems"
+          "group": "2-special",
+          "when": "view == betterOpenEditors && viewItem =~ /<file>/"
         },
         {
           "command": "betterOpenEditors.revealFileInOS",
-          "group": "special",
-          "when": "view == betterOpenEditors && viewItem == folder"
+          "group": "2-special",
+          "when": "view == betterOpenEditors && viewItem =~ /<folder>/"
         },
         {
           "command": "betterOpenEditors.revealFileInOS",
-          "group": "special",
-          "when": "view == betterOpenEditors && viewItem == workspace"
+          "group": "2-special",
+          "when": "view == betterOpenEditors && viewItem =~ /<workspace>/"
+        },
+        {
+          "command": "betterOpenEditors.openPackageFile",
+          "group": "2-special",
+          "when": "view == betterOpenEditors && viewItem =~ /<workspace>/ && viewItem =~ /<realpackage>/"
+        },
+        {
+          "command": "betterOpenEditors.openPackageFile",
+          "group": "2-special",
+          "when": "view == betterOpenEditors && viewItem =~ /<folder>/ && viewItem =~ /<realpackage>/"
+        },
+        {
+          "command": "betterOpenEditors.openInIntegratedTerminal",
+          "group": "2-special",
+          "when": "view == betterOpenEditors && viewItem =~ /<workspace>/"
+        },
+        {
+          "command": "betterOpenEditors.openInIntegratedTerminal",
+          "group": "2-special",
+          "when": "view == betterOpenEditors && viewItem =~ /<folder>/"
         },
         {
           "command": "betterOpenEditors.pinTab",
-          "group": "specialPin",
-          "when": "view == betterOpenEditors && viewItem == fileCurrent"
+          "group": "3-specialPin",
+          "when": "view == betterOpenEditors && viewItem =~ /<file>/ && viewItem =~ /<current>/"
         },
         {
           "command": "betterOpenEditors.unpinTab",
-          "group": "specialPin",
-          "when": "view == betterOpenEditors && viewItem == fileCurrentPinned"
+          "group": "3-specialPin",
+          "when": "view == betterOpenEditors && viewItem =~ /<file>/ && viewItem =~ /<current>/ && viewItem =~ /<pinned>/"
+        },
+        {
+          "command": "betterOpenEditors.closeTab",
+          "group": "4-close",
+          "when": "view == betterOpenEditors && viewItem =~ /<file>/"
+        },
+        {
+          "command": "betterOpenEditors.closeFolder",
+          "group": "4-close",
+          "when": "view == betterOpenEditors && viewItem =~ /<folder>/"
         }
       ]
     }

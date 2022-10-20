@@ -2,6 +2,11 @@
 
 ## Release Notes
 
+### 1.7.0
+
+ * Feature: Add "Close all tabs of package as icon command for folders
+ * Feature: Add "Open package file" in context menu for folders
+
 ### 1.6.1
 
  * Fix: Current file was no longer marked correctly
