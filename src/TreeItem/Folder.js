@@ -11,9 +11,9 @@ module.exports = class Folder extends Base {
 		
 		this.addContextValue('folder');
 		this.id                 = `${tabGroupIndex}-${path}`;
-		this.resourceUri        = vscode.Uri.parse('/' + path);
-		this.path               = path;
-		this.sortKey            = this.resourceUri.fsPath.toLowerCase();
+		this.resourceUri        = vscode.Uri.file(path);
+		this.path               = this.resourceUri.fsPath;
+		this.sortKey            = this.path.toLowerCase();
 		this.collapsibleState   = vscode.TreeItemCollapsibleState.Expanded;
 		this.packageData		= packageData;
 		this.workspaceFolder    = workspaceFolder;

@@ -24,6 +24,8 @@ class QuickPick {
 	}
 
 	findFiles() {
+		this.#pick.value = '';
+
 		const tab = vscode.window.tabGroups.activeTabGroup.activeTab;
 		const id = helper.getId(tab);
 
@@ -46,8 +48,10 @@ class QuickPick {
 			this.#pick.busy = true;
 			this.#pick.show();
 		} else {
-			glob = '**/*' + q.replace(' ', '*') + '*';
-			// console.log(glob);
+			const globQ = q.split('').map((char) => {
+				return char.match(/\s/) ? '*' : `[${char.toLowerString()}${char.toUpperString()}]`;
+			}).join('');
+			glob = `*${globQ}*`;
 		}
 
 		// use https://code.visualstudio.com/api/references/vscode-api#QuickPick:~:text=)%3A%20FileSystemWatcher-,findFiles,-(include%3A
