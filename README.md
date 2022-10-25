@@ -6,6 +6,11 @@ Therefore, this extension helps to group open files in package folders (defined 
 
 ![This is why it is better](./meta/screenshot.gif)
 
+**Quick Pick feature to open only files of the current package**
+
+![Quick Pick](./meta/quickpick.png)
+
+
 ## Features
 
   * Automatically detects packages (package.json, composer.json).
@@ -13,6 +18,7 @@ Therefore, this extension helps to group open files in package folders (defined 
   * Supports multiple workspace folders.
   * Supports tab groups.
   * Platform independent.
+  * Quick pick to select only files of the currently selected package (Keyboard shortcuts "`betterOpenEditors.openFileOfCurrentPackage`").
 
 ## Package folder generation
 
@@ -22,6 +28,4 @@ Package folders, which only contain other folders, are not created.
 
 ## Known Issues
 
-* Meta tabs like the "Settings" tab are currently not visible as the API does not offer a possibility to get the internal URI of those tabs.  
-
-  If you would like to support the feature request I've created in the VS Code issue tracker, give a thumbs up to this issue (20 Thumbs up push the issue into the backlog): https://github.com/microsoft/vscode/issues/158853
+* Meta tabs like the "Settings" tab are currently not visible as the API does not offer a possibility to get the internal URI of those tabs (https://github.com/microsoft/vscode/issues/158853).
