@@ -2,22 +2,6 @@ const $fs = require('fs');
 const $path = require('path');
 
 /**
- * Normalizes the path in a way we can handle windows and mac pathes nearly the same way
- *
- * @param {string} path - A path that comes from VS code
- * @returns {string} a normalized path
- */
-exports.normalizePath = (path) => {
-	// the uri.path in vscode is sometimes with forward slashes...
-	path = $path.normalize(path);
-	// remove the leading slash on windows ("\c:\\...\...") and make the drive letter always uppercase
-	path = path.replace(/^\\(.:\\)/, (...hits) => {
-		return hits[1].toUpperCase();
-	});
-	return path;
-};
-
-/**
  * Extracts a path string from a VS Code input object
  *
  * @param {object} input - An input object (or document) that comes from VS code
@@ -25,10 +9,10 @@ exports.normalizePath = (path) => {
  */
 exports.getPath = (input) => {
 	if (typeof input.uri !== 'undefined') {
-		return exports.normalizePath(input.uri.path);
+		return input.uri.fsPath;
 		// diff items
 	} else if (typeof input.original !== 'undefined') {
-		return exports.normalizePath(input.original.path);
+		return input.original.fsPath;
 	} else {
 		return '';
 	}
@@ -42,20 +26,10 @@ exports.getPath = (input) => {
  */
 exports.getId = (tab) => {
 	if (tab.input && typeof tab.input.uri !== 'undefined') {
-		return (
-			tab.group.viewColumn +
-			'-' +
-			exports.normalizePath(tab.input.uri.path)
-		);
+		return tab.group.viewColumn + '-' + tab.input.uri.fsPath;
 		// diff items
 	} else if (tab.input && typeof tab.input.original !== 'undefined') {
-		return (
-			tab.group.viewColumn +
-			'-' +
-			`${exports.normalizePath(
-				tab.input.original.path
-			)}|${exports.normalizePath(tab.input.modified.path)}`
-		);
+		return tab.group.viewColumn + '-' + tab.input.original.fsPath + '|' + tab.input.modified.fsPath;
 	}
 	return null;
 };
@@ -117,6 +91,52 @@ exports.getPackageData = (path) => {
 
 	return returner;
 };
+
+
+/**
+ * Escapes parameters for the use in a regular expression
+ *
+ * @param {string} string The input string
+ */
+
+function escapeRegExp(string) {
+	return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
+/**
+ * Sort a list of file paths
+ *
+ * @param {array} paths The list of file paths
+ * @param {callback} pathExtractor A function that returns that corresponding path, eg. (item) => item.fsPath
+ * @param {string} sep The path separator that should be used
+ */
+exports.sortPaths = (paths, pathExtractor, sep) => {
+	const dirs = Object.fromEntries(paths
+		// extract dir and set space before dir separator (nice trick to sort correctly)
+		.map((item) => pathExtractor(item).match(new RegExp(`(.+)${escapeRegExp(sep)}`))[1].replaceAll(sep, ' ' + sep))
+		.sort()
+		// remove the space before the dir separator
+		.map((path) => path.replaceAll(' ' + sep, sep))
+		// we only want to have unique dirs
+		.filter((value, index, self) => self.indexOf(value) === index )
+		// create an "entries" object to be able to use Object.fromEntries
+		.map((path) => [path, []])
+	);
+	
+	// put all files in the correct folders
+	paths.forEach((item) => {
+		const path = pathExtractor(item).match(new RegExp(`(.+)${escapeRegExp(sep)}`))[1];
+		dirs[path].push(item);
+	});
+
+	// get all the files back and sort the files
+	let result = [];
+	for (const dir in dirs) {
+		result = result.concat(dirs[dir].sort());
+	}
+
+	return result;
+}
 
 exports.makeItalic = (text) => {
 	return text.replace(/[A-Za-z0-9]/g, (char) => {

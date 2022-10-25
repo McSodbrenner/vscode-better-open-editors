@@ -26,6 +26,13 @@
   ],
   "main": "./src/extension.js",
   "contributes": {
+    "keybindings": [
+      {
+        "command": "betterOpenEditors.openFileOfCurrentPackage",
+        "key": "ctrl+oem_1",
+        "mac": "cmd+[BracketLeft]"
+      }
+    ],
     "configuration": {
       "title": "Better Open Editors",
       "properties": {
@@ -89,6 +96,11 @@
       ]
     },
     "commands": [
+      {
+        "command": "betterOpenEditors.openFileOfCurrentPackage",
+        "title": "Open file of current package",
+        "icon": "$(files)"
+      },
       {
         "command": "betterOpenEditors.refreshTree",
         "title": "Refresh tree",
@@ -271,6 +283,7 @@
   },
   "dependencies": {
     "lodash.orderby": "^4.6.0",
-    "minimatch": "^5.1.0"
+    "minimatch": "^5.1.0",
+    "sort-paths": "^1.1.1"
   }
 }

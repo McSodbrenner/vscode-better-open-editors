@@ -14,7 +14,7 @@ const event                 = require('./event');
 class TreeviewPanel {
 	#debugMode;
 	#treeview;
-	#flat;
+	flat;
 	#dataProvider;
 	tree;
 
@@ -44,7 +44,7 @@ class TreeviewPanel {
 			const id = helper.getId(changed.document);
 			if (!id) return;
 
-			const fileItem = this.#flat.files[id];
+			const fileItem = this.flat.files[id];
 			if (fileItem) {
 				fileItem.update(changed.document);
 				this.#dataProvider.refresh();
@@ -63,7 +63,7 @@ class TreeviewPanel {
 					if (typeof tab.input === 'undefined') return;
 		
 					// update the icon
-					const fileItem = this.#flat.files[helper.getId(tab)];
+					const fileItem = this.flat.files[helper.getId(tab)];
 					fileItem.update(tab);
 					this.#updateContextValue(fileItem);
 					this.#dataProvider.refresh();
@@ -87,7 +87,7 @@ class TreeviewPanel {
 	recreateTree(initial = false) {
 		this.#log('> recreateTree', (new Date).toLocaleTimeString());
 	
-		this.#flat = {
+		this.flat = {
 			'tabGroups': {},
 			'workspaceFolders': {},
 			'folders': {},
@@ -132,14 +132,14 @@ class TreeviewPanel {
 		// iterate all flat.workspaces and flat.folders and sort content (first show folders and then files)
 		this.tree.children = orderBy(this.tree.children, ['contextValue', 'sortKey'], ['desc', 'asc']);
 	
-		for (const id in this.#flat.tabGroups) {
-			this.#flat.tabGroups[id].children = orderBy(this.#flat.tabGroups[id].children, ['contextValue', 'sortKey'], ['desc', 'asc']);
+		for (const id in this.flat.tabGroups) {
+			this.flat.tabGroups[id].children = orderBy(this.flat.tabGroups[id].children, ['contextValue', 'sortKey'], ['desc', 'asc']);
 		}
-		for (const id in this.#flat.workspaceFolders) {
-			this.#flat.workspaceFolders[id].children = orderBy(this.#flat.workspaceFolders[id].children, ['contextValue', 'sortKey'], ['desc', 'asc']);
+		for (const id in this.flat.workspaceFolders) {
+			this.flat.workspaceFolders[id].children = orderBy(this.flat.workspaceFolders[id].children, ['contextValue', 'sortKey'], ['desc', 'asc']);
 		}
-		for (const id in this.#flat.folders) {
-			this.#flat.folders[id].children = orderBy(this.#flat.folders[id].children, ['contextValue', 'sortKey'], ['desc', 'asc']);
+		for (const id in this.flat.folders) {
+			this.flat.folders[id].children = orderBy(this.flat.folders[id].children, ['contextValue', 'sortKey'], ['desc', 'asc']);
 		}
 		
 		if (initial) {
@@ -168,11 +168,11 @@ class TreeviewPanel {
 			let tabGroup = null;
 			const tabGroupIndex = tab.group.viewColumn;
 
-			if (this.#flat.tabGroups[tabGroupIndex]) {
-				tabGroup = this.#flat.tabGroups[tabGroupIndex];
+			if (this.flat.tabGroups[tabGroupIndex]) {
+				tabGroup = this.flat.tabGroups[tabGroupIndex];
 			} else {
 				tabGroup = new TabgroupItem(tabGroupIndex, payload.parent);
-				this.#flat.tabGroups[tabGroupIndex] = tabGroup;
+				this.flat.tabGroups[tabGroupIndex] = tabGroup;
 				payload.parent.children.push(tabGroup);
 			}
 			payload.parent = tabGroup;
@@ -196,12 +196,12 @@ class TreeviewPanel {
 				// we need to add the path sep to be sure it is the correct workspace
 				// otherwise a file "workspace2/foo.bar" would macht "workspace", because the "2" is ignored
 				if (itemPath.startsWith(workspacePath + $path.sep)) {
-					if (this.#flat.workspaceFolders[workspaceFlatId]) {
-						workspaceFolder = this.#flat.workspaceFolders[workspaceFlatId];
+					if (this.flat.workspaceFolders[workspaceFlatId]) {
+						workspaceFolder = this.flat.workspaceFolders[workspaceFlatId];
 					} else {
 						const packageData = helper.getPackageData(workspacePath);
 						workspaceFolder = new WorkspaceFolderItem(_workspace.uri, tabGroupIndex, payload.parent, packageData);
-						this.#flat.workspaceFolders[workspaceFlatId] = workspaceFolder;
+						this.flat.workspaceFolders[workspaceFlatId] = workspaceFolder;
 						payload.parent.children.push(workspaceFolder);
 					}
 					payload.parent = workspaceFolder;
@@ -231,11 +231,11 @@ class TreeviewPanel {
 			const folderFlatId = `${tabGroupIndex}-${path}`;
 
 			if (packageData || patternMatch) {
-				if (this.#flat.folders[folderFlatId]) {
-					folder = this.#flat.folders[folderFlatId];
+				if (this.flat.folders[folderFlatId]) {
+					folder = this.flat.folders[folderFlatId];
 				} else {
 					folder = new FolderItem(path, tabGroupIndex, payload.parent, payload.workspaceFolder, packageData);
-					this.#flat.folders[folderFlatId] = folder;
+					this.flat.folders[folderFlatId] = folder;
 					payload.parent.children.push(folder);
 				}
 				payload.parent = folder;
@@ -249,7 +249,7 @@ class TreeviewPanel {
 
 	#addTab(tab, payload, _config) {
 		const file = new FileItem(tab, payload.parent, payload.workspaceFolder);
-		this.#flat.files[file.id] = file;
+		this.flat.files[file.id] = file;
 		payload.parent.children.push(file);
 		
 		return payload;
@@ -263,7 +263,7 @@ class TreeviewPanel {
 		// find the id in the children. If it is found it is safe to reveal it
 		const treeItem = children.find((treeItem) => treeItem.hasContextValue('file') && treeItem.id === id );
 		if (treeItem) {
-			const ref = this.#flat.files[id];
+			const ref = this.flat.files[id];
 			this.#treeview.reveal(ref);
 			this.#updateContextValue(ref);
 		}
@@ -272,8 +272,8 @@ class TreeviewPanel {
 	// update the contextValue to view the "pin tab" context menu
 	// set the contextValue of the file to "[file][current]" and others to "[file]" only
 	#updateContextValue(fileItem) {
-		for (const id in this.#flat.files) {
-			this.#flat.files[id].setContextValue('file');
+		for (const id in this.flat.files) {
+			this.flat.files[id].setContextValue('file');
 		}
 
 		fileItem.addContextValue('current');

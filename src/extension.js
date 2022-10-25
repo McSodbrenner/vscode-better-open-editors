@@ -1,8 +1,10 @@
 const vscode		= require('vscode');
 const TreeviewPanel	= require('./treeviewPanel');
+const QuickPick		= require('./QuickPick.js');
 
 function activate(context) {
 	const treeviewPanel = new TreeviewPanel(context);
+	const quickPick = new QuickPick(context, treeviewPanel);
 
 	vscode.commands.registerCommand('betterOpenEditors.openExtensionSettings', () => {
 		// the correct way but does not keep the correct order
@@ -56,6 +58,10 @@ function activate(context) {
 
 	vscode.commands.registerCommand('betterOpenEditors.openPackageFile', (treeItem) => {
 		vscode.commands.executeCommand('vscode.open', vscode.Uri.file(treeItem.packageData.packageFile));
+	});
+
+	vscode.commands.registerCommand('betterOpenEditors.openFileOfCurrentPackage', () => {
+		quickPick.findFiles(vscode.window.tabGroups.activeTabGroup.activeTab);
 	});
 }
 

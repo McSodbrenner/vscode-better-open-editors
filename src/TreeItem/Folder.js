@@ -1,7 +1,6 @@
 const vscode    = require('vscode');
 const $os       = require('os');
 const $path     = require('path');
-const helper    = require ('../helpers');
 const Base		= require ('./Base');
 
 module.exports = class Folder extends Base {
@@ -14,7 +13,7 @@ module.exports = class Folder extends Base {
 		this.id                 = `${tabGroupIndex}-${path}`;
 		this.resourceUri        = vscode.Uri.parse('/' + path);
 		this.path               = path;
-		this.sortKey            = helper.normalizePath(path).toLowerCase();
+		this.sortKey            = this.resourceUri.fsPath.toLowerCase();
 		this.collapsibleState   = vscode.TreeItemCollapsibleState.Expanded;
 		this.packageData		= packageData;
 		this.workspaceFolder    = workspaceFolder;

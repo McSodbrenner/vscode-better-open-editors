@@ -2,9 +2,13 @@
 
 ## Release Notes
 
+### 1.8.0
+
+* Feature: Add "Quick Pick" feature to open a file that belongs to the currently edited package
+
 ### 1.7.0
 
- * Feature: Add "Close all tabs of package as icon command for folders
+ * Feature: Add "Close all tabs of package" as icon command for folders
  * Feature: Add "Open package file" in context menu for folders
 
 ### 1.6.1

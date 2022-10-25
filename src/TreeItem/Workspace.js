@@ -1,6 +1,5 @@
 const vscode    = require('vscode');
 const path      = require('path');
-const helper    = require ('../helpers');
 const Base		= require ('./Base');
 
 module.exports = class Workspace extends Base {
@@ -12,8 +11,8 @@ module.exports = class Workspace extends Base {
 		this.addContextValue('workspace');
 		this.id                 = `${tabGroupIndex}-${uri.path}`;
 		this.resourceUri        = uri;
-		this.path               = helper.normalizePath(uri.path);
-		this.sortKey            = helper.normalizePath(uri.path).toLowerCase();
+		this.path               = uri.fsPath;
+		this.sortKey            = uri.fsPath.toLowerCase();
 		this.collapsibleState   = vscode.TreeItemCollapsibleState.Expanded;
 		this.packageData		= packageData;
 		
