@@ -23,7 +23,10 @@ Therefore, this extension helps to group open files in package folders (defined 
 ## Package folder generation
 
 The main purpose of the extension is to group files automatically that belong to packages. For this it is looked whether there is a package.json/composer.json in a folder or whether a package corresponds to a glob pattern from the settings.
-If indeed all folders should be displayed as package folders, it is also possible to pass `**` as pattern.
+  
+  * If all folders are to be displayed as package folders, it is also possible to pass `**` as a pattern.
+  * If a flat hierarchy is to be created, an empty string can also be passed as a pattern. However, folders are always created for packages.
+
 Package folders, which only contain other folders, are not created.
 
 ## Known Issues
