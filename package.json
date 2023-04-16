@@ -79,8 +79,14 @@
           "default": false,
           "description": "Hides the path of a package if a package name is available."
         },
-        "betterOpenEditors.SkipWorkspacesIfNotNeeded": {
+        "betterOpenEditors.HideFilePath": {
           "order": 8,
+          "type": "boolean",
+          "default": false,
+          "description": "Hides the path of a file."
+        },
+        "betterOpenEditors.SkipWorkspacesIfNotNeeded": {
+          "order": 9,
           "type": "boolean",
           "default": true,
           "description": "Skips the workspace tree level if you have only one folder opened. But it could be useful to disable this setting if you want to see the package info for the workspace folder."

@@ -118,6 +118,13 @@ module.exports = class File extends Base {
 			}
 		}
 
+		if (config.get('HideFilePath')) {
+			const parts = this.label.split($path.sep);
+			if (parts.length > 1) {
+				this.label = parts.pop();
+			}
+		}
+
 		this.label = tab.isPreview ? helper.makeItalic(this.label) : this.label;
 	}
 }
