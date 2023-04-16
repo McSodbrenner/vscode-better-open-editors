@@ -2,7 +2,7 @@
 
 ## Release Notes
 
-### 1.8.1
+### 1.9.0
 
 * Feature: Add "Hide file path" feature to be able to hide the file paths.
 
