@@ -2,6 +2,10 @@
 
 ## Release Notes
 
+### 1.8.1
+
+* Feature: Add "Hide file path" feature to be able to hide the file paths.
+
 ### 1.8.0
 
 * Feature: Add "Quick Pick" feature to open a file that belongs to the currently edited package
