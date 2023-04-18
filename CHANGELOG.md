@@ -2,17 +2,21 @@
 
 ## Release Notes
 
+### 1.10.1
+
+ * Fix: Show panel on startup.
+
 ### 1.10.0
 
-* Feature: Add support for images.
+ * Feature: Add support for images.
 
 ### 1.9.0
 
-* Feature: Add "Hide file path" feature to be able to hide the file paths.
+ * Feature: Add "Hide file path" feature to be able to hide the file paths.
 
 ### 1.8.0
 
-* Feature: Add "Quick Pick" feature to open a file that belongs to the currently edited package
+ * Feature: Add "Quick Pick" feature to open a file that belongs to the currently edited package
 
 ### 1.7.0
 

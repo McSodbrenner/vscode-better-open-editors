@@ -22,7 +22,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:betterOpenEditors"
+    "onStartupFinished"
   ],
   "main": "./src/extension.js",
   "contributes": {
