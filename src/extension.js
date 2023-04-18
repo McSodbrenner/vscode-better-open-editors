@@ -21,12 +21,24 @@ function activate(context) {
 	});
 
 	vscode.commands.registerCommand('betterOpenEditors.closeTab', (treeItem) => {
-		vscode.window.tabGroups.close(treeItem.tab);
+		// for some reason we cannot simply call this when closing images:
+		// vscode.window.tabGroups.close(treeItem.tab);
+		// so we have to search for the current tab by uri and close it
+		if (treeItem.tab.input.viewType === 'imagePreview.previewEditor') {
+			const input = treeItem.tab.input.uri;
+			const tabs = vscode.window.tabGroups.all.map(tg => tg.tabs).flat();
+			const index = tabs.findIndex(tab => tab.input.uri.path === input.path);
+			if (index !== -1) {
+				vscode.window.tabGroups.close(tabs[index]);
+			}
+		} else {
+			vscode.window.tabGroups.close(treeItem.tab);
+		}
 	});
 
 	vscode.commands.registerCommand('betterOpenEditors.closeFolder', (treeItem) => {
 		treeItem.children.forEach(child => {
-			vscode.window.tabGroups.close(child.tab);
+			vscode.commands.executeCommand('betterOpenEditors.closeTab', child);
 		});
 	});
 

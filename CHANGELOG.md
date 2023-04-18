@@ -2,6 +2,10 @@
 
 ## Release Notes
 
+### 1.10.0
+
+* Feature: Add support for images.
+
 ### 1.9.0
 
 * Feature: Add "Hide file path" feature to be able to hide the file paths.

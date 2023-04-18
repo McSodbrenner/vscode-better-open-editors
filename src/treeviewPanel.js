@@ -106,12 +106,16 @@ class TreeviewPanel {
 		
 		// flatten all current tabs as we don't need the tab groups
 		let tabs = vscode.window.tabGroups.all.map(group => group.tabs).flat();
-		
-		// filter virtual elements like "Keyboard Shortcuts"
-		tabs = tabs.filter(tab => typeof tab.input !== 'undefined');
 
-		// filter elements like "Markdown preview" as we don't know of which file this is the pvreview
-		tabs = tabs.filter(tab => typeof tab.input.viewType === 'undefined');
+		tabs = tabs.filter(tab => {
+			// keep images
+			if (tab.input.viewType === 'imagePreview.previewEditor') return true;
+
+			// filter virtual elements like "Keyboard Shortcuts" or "Markdown preview" as we don't know of which file this is the preview
+			if (typeof tab.input !== 'undefined' && typeof tab.input.viewType === 'undefined') return true;
+
+			return false;
+		});
 
 		// created nested Tree
 		tabs.forEach(tab => {

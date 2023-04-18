@@ -15,9 +15,9 @@ module.exports = class File extends Base {
 		this.tab                = tab;
 		this.workspaceFolder    = workspaceFolder;
 
-		this.id             = helper.getId(tab);
-		this.path           = helper.getPath(tab.input);
-		this.sortKey        = this.path.toLowerCase();
+		this.id         = helper.getId(tab);
+		this.path       = helper.getPath(tab.input);
+		this.sortKey    = this.path.toLowerCase();
 
 		// standard items
 		if  (typeof tab.input.uri !== 'undefined') {
@@ -71,7 +71,7 @@ module.exports = class File extends Base {
 			this.internalLabel  = tab.label;
 			this.resourceUri    = tab.input.uri;
 
-			// TODOCE: cannot switch to preview tab
+			// cannot switch to preview tab... true anymore?
 			// this.command = {
 			//     // "untitled" files cannot be handled via vscode.open :(
 			//     command: "betterOpenEditors.showTab",
