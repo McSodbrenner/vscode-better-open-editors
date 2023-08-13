@@ -108,6 +108,8 @@ class TreeviewPanel {
 		let tabs = vscode.window.tabGroups.all.map(group => group.tabs).flat();
 
 		tabs = tabs.filter(tab => {
+			if (!tab.input) return false;
+
 			// keep images
 			if (tab.input.viewType === 'imagePreview.previewEditor') return true;
 
