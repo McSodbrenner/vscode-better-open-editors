@@ -109,7 +109,7 @@ class TreeviewPanel {
 
 		tabs = tabs.filter(tab => {
 			// keep images
-			if (tab.input.viewType === 'imagePreview.previewEditor') return true;
+			if (typeof tab.input !== 'undefined' && typeof tab.input.viewType === 'string' && tab.input.viewType === 'imagePreview.previewEditor') return true;
 
 			// filter virtual elements like "Keyboard Shortcuts" or "Markdown preview" as we don't know of which file this is the preview
 			if (typeof tab.input !== 'undefined' && typeof tab.input.viewType === 'undefined') return true;

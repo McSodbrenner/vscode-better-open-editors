@@ -2,6 +2,10 @@
 
 ## Release Notes
 
+### 1.10.2
+
+ * Fix errors on startup with meta pages like "Welcome".
+
 ### 1.10.1
 
  * Fix: Show panel on startup.
