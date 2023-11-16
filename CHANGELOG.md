@@ -2,6 +2,10 @@
 
 ## Release Notes
 
+### 1.11.0
+
+  * Fix: The settings link does now use the official string (fixes #2)
+
 ### 1.10.2
 
  * Fix errors on startup with meta pages like "Welcome".

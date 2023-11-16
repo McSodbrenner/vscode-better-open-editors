@@ -7,9 +7,9 @@ function activate(context) {
 	const quickPick = new QuickPick(context, treeviewPanel);
 
 	vscode.commands.registerCommand('betterOpenEditors.openExtensionSettings', () => {
-		// the correct way but does not keep the correct order
+		vscode.commands.executeCommand('workbench.action.openSettings', '@ext:McSodbrenner.better-open-editors');
 		// vscode.commands.executeCommand('workbench.action.openSettings', '@ext:McSodbrenner.better-open-editors');
-		vscode.commands.executeCommand('workbench.action.openSettings', 'betterOpenEditors.');
+
 	});
 	
 	vscode.commands.registerCommand('betterOpenEditors.refreshTree', () => {
