@@ -8,10 +8,12 @@ function activate(context) {
 
 	vscode.commands.registerCommand('betterOpenEditors.openExtensionSettings', () => {
 		vscode.commands.executeCommand('workbench.action.openSettings', '@ext:McSodbrenner.better-open-editors');
-		// vscode.commands.executeCommand('workbench.action.openSettings', '@ext:McSodbrenner.better-open-editors');
-
 	});
-	
+
+	vscode.commands.registerCommand('betterOpenEditors.saveAll', () => {
+		vscode.commands.executeCommand('workbench.action.files.saveAll');
+	});
+
 	vscode.commands.registerCommand('betterOpenEditors.refreshTree', () => {
 		treeviewPanel.recreateTree();
 	});

@@ -4,23 +4,24 @@
 
 ### 1.11.0
 
+  * Feature: Add "Save all" button to Better Open Editors panel.
   * Fix: The settings link does now use the official string (fixes #2)
 
 ### 1.10.2
 
- * Fix errors on startup with meta pages like "Welcome".
+ * Fix errors on startup with meta pages like "Welcome"
 
 ### 1.10.1
 
- * Fix: Show panel on startup.
+ * Fix: Show panel on startup
 
 ### 1.10.0
 
- * Feature: Add support for images.
+ * Feature: Add support for images
 
 ### 1.9.0
 
- * Feature: Add "Hide file path" feature to be able to hide the file paths.
+ * Feature: Add "Hide file path" feature to be able to hide the file paths
 
 ### 1.8.0
 
@@ -42,8 +43,8 @@
 
 ### 1.5.0
 
- * Fix: Handle errors caused by undefined tab.input (e.g. "Settings" page)
  * Feature: Allow to hide package path by config
+ * Fix: Handle errors caused by undefined tab.input (e.g. "Settings" page)
 
 ### 1.4.2
 

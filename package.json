@@ -118,6 +118,11 @@
         "icon": "$(settings-gear)"
       },
       {
+        "command": "betterOpenEditors.saveAll",
+        "title": "Save all",
+        "icon": "$(save-all)"
+      },
+      {
         "command": "betterOpenEditors.showTab",
         "title": "Show tab"
       },
@@ -164,14 +169,19 @@
     "menus": {
       "view/title": [
         {
-          "command": "betterOpenEditors.refreshTree",
+          "command": "betterOpenEditors.saveAll",
           "when": "view == betterOpenEditors",
           "group": "navigation"
         },
         {
+          "command": "betterOpenEditors.refreshTree",
+          "when": "view == betterOpenEditors",
+          "group": "hidden"
+        },
+        {
           "command": "betterOpenEditors.openExtensionSettings",
           "when": "view == betterOpenEditors",
-          "group": "navigation"
+          "group": "hidden"
         }
       ],
       "view/item/context": [
