@@ -2,9 +2,13 @@
 
 ## Release Notes
 
+### 1.11.1
+
+  * Fix: Improve Quick Pick display
+  
 ### 1.11.0
 
-  * Feature: Add "Save all" button to Better Open Editors panel.
+  * Feature: Add "Save all" button to Better Open Editors panel (fixes #19)
   * Fix: The settings link does now use the official string (fixes #2)
 
 ### 1.10.2

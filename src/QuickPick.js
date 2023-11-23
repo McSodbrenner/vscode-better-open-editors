@@ -95,6 +95,8 @@ class QuickPick {
 
 				items.push({
 					label,
+					description: dirname,
+					iconPath: vscode.ThemeIcon.File,
 					resourceUri: file,
 				});
 			});
