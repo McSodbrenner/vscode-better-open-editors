@@ -8,6 +8,7 @@ const TabgroupItem          = require('./TreeItem/Tabgroup');
 const WorkspaceFolderItem   = require('./TreeItem/Workspace');
 const FolderItem            = require('./TreeItem/Folder');
 const FileItem              = require('./TreeItem/File');
+const UnknownFileItem       = require('./TreeItem/UnknownFile');
 const packageJson           = require('../package.json');
 const event                 = require('./event');
 
@@ -105,9 +106,9 @@ class TreeviewPanel {
 		this.tree = new FolderItem(rootPath);
 		
 		// flatten all current tabs as we don't need the tab groups
-		let tabs = vscode.window.tabGroups.all.map(group => group.tabs).flat();
+		const originalTabs = vscode.window.tabGroups.all.map(group => group.tabs).flat();
 
-		tabs = tabs.filter(tab => {
+		let tabs = originalTabs.filter(tab => {
 			// keep images
 			if (typeof tab.input !== 'undefined' && typeof tab.input.viewType === 'string' && tab.input.viewType === 'imagePreview.previewEditor') return true;
 
@@ -116,6 +117,8 @@ class TreeviewPanel {
 
 			return false;
 		});
+
+		const otherTabs = originalTabs.filter(tab => !tabs.includes(tab));
 
 		// created nested Tree
 		tabs.forEach(tab => {
@@ -145,6 +148,11 @@ class TreeviewPanel {
 		for (const id in this.flat.folders) {
 			this.flat.folders[id].children = orderBy(this.flat.folders[id].children, ['contextValue', 'sortKey'], ['desc', 'asc']);
 		}
+
+		// add other tabs
+		otherTabs.forEach(tab => {
+			this.#addUnknownTab(tab, this.tree);
+		});
 		
 		if (initial) {
 			this.#treeview = vscode.window.createTreeView('betterOpenEditors', {
@@ -257,6 +265,14 @@ class TreeviewPanel {
 		payload.parent.children.push(file);
 		
 		return payload;
+	}
+
+	#addUnknownTab(tab, parent) {
+		const file = new UnknownFileItem(tab);
+		this.flat.files[file.id] = file;
+		parent.children.push(file);
+		
+		return file;
 	}
 
 	// https://github.com/microsoft/vscode-discussions/discussions/125

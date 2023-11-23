@@ -5,6 +5,7 @@
 ### 1.11.1
 
   * Fix: Improve Quick Pick display
+  * Fix: Show internal tabs with notification
   
 ### 1.11.0
 

@@ -164,6 +164,10 @@
       {
         "command": "betterOpenEditors.openPackageFile",
         "title": "Open package file"
+      },
+      {
+        "command": "betterOpenEditors.showUnknownFileInfo",
+        "title": "Show UnknownFile info"
       }
     ],
     "menus": {
@@ -278,7 +282,7 @@
         {
           "command": "betterOpenEditors.closeTab",
           "group": "4-close",
-          "when": "view == betterOpenEditors && viewItem =~ /<file>/"
+          "when": "view == betterOpenEditors && (viewItem =~ /<file>/ || viewItem =~ /<unknownfile>/)"
         },
         {
           "command": "betterOpenEditors.closeFolder",

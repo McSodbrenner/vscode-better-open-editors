@@ -26,7 +26,7 @@ function activate(context) {
 		// for some reason we cannot simply call this when closing images:
 		// vscode.window.tabGroups.close(treeItem.tab);
 		// so we have to search for the current tab by uri and close it
-		if (treeItem.tab.input.viewType === 'imagePreview.previewEditor') {
+		if (treeItem.tab?.input?.viewType === 'imagePreview.previewEditor') {
 			const input = treeItem.tab.input.uri;
 			const tabs = vscode.window.tabGroups.all.map(tg => tg.tabs).flat();
 			const index = tabs.findIndex(tab => tab.input.uri.path === input.path);
@@ -73,9 +73,13 @@ function activate(context) {
 	vscode.commands.registerCommand('betterOpenEditors.openPackageFile', (treeItem) => {
 		vscode.commands.executeCommand('vscode.open', vscode.Uri.file(treeItem.packageData.packageFile));
 	});
-
+	
 	vscode.commands.registerCommand('betterOpenEditors.openFileOfCurrentPackage', () => {
 		quickPick.findFiles(vscode.window.tabGroups.activeTabGroup.activeTab);
+	});
+
+	vscode.commands.registerCommand('betterOpenEditors.showUnknownFileInfo', (message) => {
+		vscode.window.showWarningMessage(message);
 	});
 }
 
