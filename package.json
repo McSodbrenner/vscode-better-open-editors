@@ -9,7 +9,7 @@
     "packages",
     "monorepo"
   ],
-  "version": "1.11.0",
+  "version": "1.11.1",
   "preview": false,
   "license": "MIT",
   "icon": "meta/icon.png",
