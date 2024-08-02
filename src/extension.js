@@ -1,4 +1,5 @@
 const vscode		= require('vscode');
+const helper        = require ('./helpers');
 const TreeviewPanel	= require('./treeviewPanel');
 const QuickPick		= require('./QuickPick.js');
 
@@ -26,15 +27,20 @@ function activate(context) {
 		// for some reason we cannot simply call this when closing images:
 		// vscode.window.tabGroups.close(treeItem.tab);
 		// so we have to search for the current tab by uri and close it
-		if (treeItem.tab?.input?.viewType === 'imagePreview.previewEditor') {
-			const input = treeItem.tab.input.uri;
-			const tabs = vscode.window.tabGroups.all.map(tg => tg.tabs).flat();
-			const index = tabs.findIndex(tab => tab.input.uri.path === input.path);
-			if (index !== -1) {
-				vscode.window.tabGroups.close(tabs[index]);
+		for (const tabGroup of vscode.window.tabGroups.all) {
+			for (const realTab of tabGroup.tabs) {
+				// allow to close a meta tab like "Settings" which does not have input
+				if (typeof treeItem.tab.input === 'undefined') {
+					if (typeof realTab.input === 'undefined' && realTab.label === treeItem.tab.label) {
+						vscode.window.tabGroups.close(realTab);
+					}
+					continue;
+				}
+
+				if (helper.getPath(realTab.input) === helper.getPath(treeItem.tab.input)) {
+					vscode.window.tabGroups.close(realTab);
+				}
 			}
-		} else {
-			vscode.window.tabGroups.close(treeItem.tab);
 		}
 	});
 

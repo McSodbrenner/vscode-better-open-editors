@@ -2,6 +2,10 @@
 
 ## Release Notes
 
+### 1.11.2
+
+  * Fix: Fix closing of tabs that stopped working in VS Code version 1.90 or 1.91 (fixes #25)
+
 ### 1.11.1
 
   * Fix: Improve Quick Pick display

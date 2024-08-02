@@ -60,7 +60,7 @@ module.exports = class File extends Base {
 					// eslint-disable-next-line no-empty
 					} catch (e) {}
 
-					this.description = `${original} 🠖 ${modified}`;
+					this.description = `${original} • ${modified}`;
 				} else if (tab.input.original.scheme === 'git') {
 					this.description = 'Changes';
 				}
