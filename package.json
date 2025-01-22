@@ -1,7 +1,7 @@
 {
   "name": "better-open-editors",
   "displayName": "Better Open Editors",
-  "description": "Groups open editors by package folders.",
+  "description": "Groups open editors by package folders or RegEx patterns.",
   "keywords": [
     "editors",
     "tabs",
@@ -118,6 +118,11 @@
         "icon": "$(settings-gear)"
       },
       {
+        "command": "betterOpenEditors.collapseAll",
+        "title": "Collapse all",
+        "icon": "$(collapse-all)"
+      },
+      {
         "command": "betterOpenEditors.saveAll",
         "title": "Save all",
         "icon": "$(save-all)"
@@ -174,6 +179,11 @@
       "view/title": [
         {
           "command": "betterOpenEditors.saveAll",
+          "when": "view == betterOpenEditors",
+          "group": "navigation"
+        },
+        {
+          "command": "betterOpenEditors.collapseAll",
           "when": "view == betterOpenEditors",
           "group": "navigation"
         },

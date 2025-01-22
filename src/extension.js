@@ -11,6 +11,10 @@ function activate(context) {
 		vscode.commands.executeCommand('workbench.action.openSettings', '@ext:McSodbrenner.better-open-editors');
 	});
 
+	vscode.commands.registerCommand('betterOpenEditors.collapseAll', () => {
+		vscode.commands.executeCommand('workbench.actions.treeView.betterOpenEditors.collapseAll');
+	});
+
 	vscode.commands.registerCommand('betterOpenEditors.saveAll', () => {
 		vscode.commands.executeCommand('workbench.action.files.saveAll');
 	});

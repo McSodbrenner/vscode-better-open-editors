@@ -2,6 +2,10 @@
 
 ## Release Notes
 
+### 1.12.0
+
+  * Feature: Add "Collapse all" button to Better Open Editors panel (fixes #32)
+
 ### 1.11.2
 
   * Fix: Fix closing of tabs that stopped working in VS Code version 1.90 or 1.91 (fixes #25)
